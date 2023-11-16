@@ -4,15 +4,16 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 
-
+// import ProfileForm from "./_components/ProfileForm";
 import { UserButton } from "@clerk/nextjs";
 
 const Nav = () => {
 
   return (
-    <div className="flex w-full h-18 bg-slate-200">
-      <div className="flex justify-end p-3">
-        <div className="font-bold">PetPal</div>
+    <div className="flex w-full h-18 bg-slate-400 justify-around">
+      <div className="flex p-3">
+        <div className="font-bold text-slate-800 text-3xl">PetPal</div>
+        <div></div>
         {/* <UserButton afterSignOutUrl="/"/> */}
       </div>
     </div>
@@ -66,12 +67,7 @@ const Body = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col items-center justify-center p-3">
-        <div className="h-44 w-44 rounded-full bg-amber-800"></div>
-        <div className="flex flex-col items-center">
-          <div className="pt-3 text-amber-900 text-8xl font-bold">ASTRO</div>
-          <div className="text-amber-700"> 3 years old | 5 miles away</div>
-        </div>
+      <div className="flex flex-col items-center justify-center p-4">
         <div>
           <div className="font-semibold">Bio: </div>
           <div>{`I'm just a chunky boy that likes sunbathing and walks at the park! `}</div>
@@ -87,15 +83,47 @@ const Body = () => {
   )
 }
 
+
+
+
+const ProfileForm = () => {
+
+  return (
+    <div>
+      <form className="mt-4">
+        <div>
+          <div>
+            <label htmlFor="todo">{`Upload a profile picture `}</label>
+            <input type="file" id="todo" name="todo" required />
+          </div>
+          <div>
+            <label htmlFor="todo">{`What's your name? `}</label>
+            <input type="text" id="todo" name="todo" required />
+          </div>
+        </div>
+      {/* <label htmlFor="todo">{`Upload a profile picture `}</label>
+      <input type="text" id="todo" name="todo" required /> */}
+    </form>
+    </div>
+  )
+}
 export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-amber-200">
       <Nav/>
+      {/* <div className="flex flex-col items-center
+      ">
+          <div className="h-44 w-44 rounded-full bg-amber-800"></div>
+          <div className="pt-3 text-amber-900 text-8xl font-bold">ASTRO</div>
+          <div className="text-amber-700"> 3 years old | 5 miles away</div>
+        </div>
       <Body/>
       <Posts/>
       <Posts/>
-      <Buttons/>
+      <Posts/>
+      <Buttons/> */}
+    <ProfileForm/>
     </main>
   );
 }
