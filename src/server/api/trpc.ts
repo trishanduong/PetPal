@@ -6,12 +6,27 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
-import { type NextRequest } from "next/server";
+import { TRPCError, initTRPC } from "@trpc/server";
+import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
+import type { GetServerSideProps } from "next";
+
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
+
+import { clerkClient, getAuth,buildClerkProps } from "@clerk/nextjs/server";
+
+
+//When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
+//This functions checks if the user is authenticated and, if so, fetches the user's data, and is passed as props on the server-side rendered page.
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { userId } = getAuth(ctx.req);
+ 
+  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
+ 
+  return { props: { ...buildClerkProps(ctx.req, { user }) } };
+};
 
 /**
  * 1. CONTEXT
@@ -25,22 +40,22 @@ interface CreateContextOptions {
   headers: Headers;
 }
 
-/**
- * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
- * it from here.
- *
- * Examples of things you may need it for:
- * - testing, so we don't have to mock Next.js' req/res
- * - tRPC's `createSSGHelpers`, where we don't have req/res
- *
- * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
- */
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  return {
-    headers: opts.headers,
-    db,
-  };
-};
+// /**
+//  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
+//  * it from here.
+//  *
+//  * Examples of things you may need it for:
+//  * - testing, so we don't have to mock Next.js' req/res
+//  * - tRPC's `createSSGHelpers`, where we don't have req/res
+//  *
+//  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
+//  */
+// export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+//   return {
+//     headers: opts.headers,
+//     db,
+//   };
+// };
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -48,12 +63,16 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (opts: { req: NextRequest }) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
-
-  return createInnerTRPCContext({
-    headers: opts.req.headers,
-  });
+  const {req} = opts;
+  const sesh = getAuth(req);
+  const userId = sesh.userId;
+  console.log('userId:', userId)
+  return {
+    db,
+    userId,
+  }
 };
 
 /**
@@ -92,6 +111,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  */
 export const createTRPCRouter = t.router;
 
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -100,3 +120,20 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+
+//If the userId is not authenticated, throw an unauthorized error, return next;
+
+const enforceUserAuthentication = t.middleware(async({ctx, next})=>{
+  if(!ctx.userId) throw new TRPCError({
+        code:"UNAUTHORIZED",
+  });
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    }
+  })
+})
+
+export const privateProcedure = t.procedure.use(enforceUserAuthentication)

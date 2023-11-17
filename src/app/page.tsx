@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 
-// import ProfileForm from "./_components/ProfileForm";
+import {ProfileForm} from "./_components/ProfileForm";
 import { UserButton } from "@clerk/nextjs";
 
 const Nav = () => {
@@ -83,30 +83,6 @@ const Body = () => {
   )
 }
 
-
-
-
-const ProfileForm = () => {
-
-  return (
-    <div>
-      <form className="mt-4">
-        <div>
-          <div>
-            <label htmlFor="todo">{`Upload a profile picture `}</label>
-            <input type="file" id="todo" name="todo" required />
-          </div>
-          <div>
-            <label htmlFor="todo">{`What's your name? `}</label>
-            <input type="text" id="todo" name="todo" required />
-          </div>
-        </div>
-      {/* <label htmlFor="todo">{`Upload a profile picture `}</label>
-      <input type="text" id="todo" name="todo" required /> */}
-    </form>
-    </div>
-  )
-}
 export default function Home() {
 
   return (
