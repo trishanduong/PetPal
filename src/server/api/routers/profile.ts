@@ -3,11 +3,9 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const profileRouter = createTRPCRouter({
-  hello: publicProcedure
+  getName: publicProcedure
     .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+    .mutation(async ({ctx})=>{
+      await ctx.db.post.create({user})
     })
 });
