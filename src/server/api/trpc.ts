@@ -17,12 +17,13 @@ import { db } from "~/server/db";
 
 import { clerkClient, getAuth,buildClerkProps } from "@clerk/nextjs/server";
 
+//Alternative: 
 
 //When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
 //This functions checks if the user is authenticated and, if so, fetches the user's data, and is passed as props on the server-side rendered page.
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req);
- 
+ t
   const user = userId ? await clerkClient.users.getUser(userId) : undefined;
  
   return { props: { ...buildClerkProps(ctx.req, { user }) } };
@@ -68,8 +69,10 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const {req} = opts;
   const sesh = getAuth(req);
   const userId = sesh.userId;
-  console.log('userId:', userId)
+  const hi = opts.req;
+
   return {
+    hi,
     db,
     userId,
   }
@@ -125,8 +128,9 @@ export const publicProcedure = t.procedure;
 //If the userId is not authenticated, throw an unauthorized error, return next;
 
 const enforceUserAuthentication = t.middleware(async({ctx, next})=>{
-  if(!ctx.userId) throw new TRPCError({
-        code:"UNAUTHORIZED",
+
+  if(!ctx.userId || ctx.userId === null) throw new TRPCError({
+    code:"UNAUTHORIZED",
   });
 
   return next({

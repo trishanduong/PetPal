@@ -12,20 +12,20 @@ datasource db {
 }
 
 model User {
-    id      BigInt      @id @default(autoincrement())
-    name    String
+    id      String      @id @default(uuid())
     profile DogProfile?
 }
 
 model DogProfile {
-    id         BigInt @id @default(autoincrement())
-    profilePic String
+    id         BigInt  @id @default(autoincrement())
+    profilePic String?
     name       String
     sex        String
     age        Int
-    bio        String @db.String(255)
-    user       User   @relation(fields: [userId], references: [id])
-    userId     BigInt @unique
+    location   String?
+    bio        String  @db.String(255)
+    user       User    @relation(fields: [userId], references: [id])
+    userId     String  @unique
     posts      Post[]
 }
 
