@@ -88,8 +88,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-amber-200">
       <Nav/>
-      {/* <div className="flex flex-col items-center
-      ">
+      <ProfileForm/>
+      <div className="flex flex-col items-center">
           <div className="h-44 w-44 rounded-full bg-amber-800"></div>
           <div className="pt-3 text-amber-900 text-8xl font-bold">ASTRO</div>
           <div className="text-amber-700"> 3 years old | 5 miles away</div>
@@ -98,8 +98,8 @@ export default function Home() {
       <Posts/>
       <Posts/>
       <Posts/>
-      <Buttons/> */}
-    <ProfileForm/>
+      <Buttons/>
+    
     </main>
   );
 }

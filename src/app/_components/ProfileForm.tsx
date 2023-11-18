@@ -2,42 +2,60 @@
 
 import { useUser } from '@clerk/nextjs';
 import { api } from '~/trpc/react';
+import {useForm, SubmitHandler} from 'react-hook-form'
 
-const initialState = {
-    message: null,
+// export function SubmitButton() {
+ 
+//   return (
+//     <button type="submit" className='bg-slate-700 text-white'>
+//       Add
+//     </button>
+//   )
+// }
+enum SexEnum {
+  female = "female",
+  male = "male",
+  other = "other",
 };
 
-
-export function SubmitButton() {
- 
-  return (
-    <button type="submit" className='bg-slate-700 text-white'>
-      Add
-    </button>
-  )
-}
+type Inputs = {
+  name: string
+  bio: string
+  sex: SexEnum
+};
 
 export function ProfileForm() {
-    const profile = api.post.hello.useQuery({text: "Trisha"});
-    console.log('profile', profile.data)
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
+    // const profile = api.post.hello.useQuery({text: "Trisha"});
+    // console.log('profile', profile.data)
 
     return (
-      <div>
-        <form className="mt-4">
-          <div>
-            {/* <div>
-              <label htmlFor="profilepicture">{`Upload a profile picture `}</label>
-              <input type="file" id="todo" name="todo" required />
-            </div> */}
-            <div>
-              <label htmlFor="name">{`What's your name? `}</label>
-              <input type="text" id="todo" name="todo" required />
-            </div>
-          </div>
-        {/* <label htmlFor="todo">{`Upload a profile picture `}</label>
-        <input type="text" id="todo" name="todo" required /> */}
-        <SubmitButton/>
+      /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+        {/* <label>Upload your most charming picture!</label>
+        <input type="image"></input> */}
+        <label>{`Whats your dog's name?`}</label>
+        <input {...register("name",{ required: true })} />
+        
+        <label>Age</label>
+        <input type="number" {...register("bio", { required: true })} />
+        <label>Write a short bio on why your dog is the perfect playmate!</label>
+        <textarea {...register("bio", { required: true, maxLength:255})} />
+
+        <label>Gender Selection</label>
+        <select {...register("sex")}>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+        <input type="submit" className='bg-slate-700 text-white'/>
       </form>
-      </div>
     )
   }
