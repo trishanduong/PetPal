@@ -37,9 +37,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-interface CreateContextOptions {
-  headers: Headers;
-}
+// interface CreateContextOptions {
+//   headers: Headers;
+// }
 
 // /**
 //  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -64,19 +64,21 @@ interface CreateContextOptions {
  *
  * @see https://trpc.io/docs/context
  */
+
+
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
   const {req} = opts;
   const sesh = getAuth(req);
   const userId = sesh.userId;
-  const hi = opts.req;
 
   return {
-    hi,
     db,
     userId,
   }
 };
+
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
 /**
  * 2. INITIALIZATION
@@ -123,7 +125,6 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
-
 
 //If the userId is not authenticated, throw an unauthorized error, return next;
 
