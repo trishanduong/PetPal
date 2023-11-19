@@ -9,6 +9,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
+import Nav from "./_components/Nav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
+          <Nav/>
           {children}
         </TRPCReactProvider>
       </body>
