@@ -8,7 +8,6 @@ import { api } from "~/trpc/server";
 import {ProfileForm} from "./_components/ProfileForm";
 import { UserButton, useUser } from "@clerk/nextjs";
 
-import Upload from "./_components/UploadFile";
 
 const Nav = () => {
   return (
@@ -90,8 +89,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-amber-200">
       <Nav/>
-      <Upload/>
-      {/* <ProfileForm/> */}
+      <ProfileForm/>
       {/* <div className="flex flex-col items-center">
           <div className="h-44 w-44 rounded-full bg-amber-800"></div>
           <div className="pt-3 text-amber-900 text-8xl font-bold">ASTRO</div>
