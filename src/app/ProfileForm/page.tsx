@@ -68,8 +68,8 @@ export default function ProfileForm() {
   
             <label>Sex: </label>
             <select {...register("sex")}>
-              <option value="female">Female</option>
               <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
 
             <label>Write a short bio on why your dog is the perfect playmate!</label>

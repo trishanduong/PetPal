@@ -24,7 +24,7 @@ model DogProfile {
     age        Int
     location   String?
     bio        String  @db.String(255)
-    user       User    @relation(fields: [userId], references: [id])
+    user       User?   @relation(fields: [userId], references: [id])
     userId     String  @unique
     posts      Post[]
 }

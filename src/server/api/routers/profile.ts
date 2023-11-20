@@ -16,8 +16,11 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
-      const {userId} = ctx;
-
+      // const {userId} = ctx.clerk.auth;
+      const userId = 'dummy123'
+      
+      console.log('profile router:', userId);
+      
       if(typeof userId !== "string") throw new TRPCError({
         code:"INTERNAL_SERVER_ERROR",
         message: "No user"
@@ -44,7 +47,7 @@ export const profileRouter = createTRPCRouter({
     .mutation(async({ctx, input})=>{
       const {profilePic} = input;
       const {userId} = ctx;
-
+      
       if(typeof userId !== "string") throw new TRPCError({
         code:"INTERNAL_SERVER_ERROR",
         message: "No user"
@@ -72,7 +75,7 @@ export const profileRouter = createTRPCRouter({
           userId: input.userId,
         }
       })
-
+      
       if (!profile) {
         throw new TRPCError({
           code: 'NOT_FOUND',

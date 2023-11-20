@@ -15,7 +15,7 @@ import { ZodError } from "zod";
 
 import { db } from "~/server/db";
 
-import { clerkClient, getAuth,buildClerkProps } from "@clerk/nextjs/server";
+import { clerkClient, getAuth, buildClerkProps, SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/server";
 
 //Alternative: 
 
@@ -37,9 +37,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-// interface CreateContextOptions {
-//   headers: Headers;
-// }
 
 // /**
 //  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -51,12 +48,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 //  *
 //  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
 //  */
-// export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-//   return {
-//     headers: opts.headers,
-//     db,
-//   };
-// };
+interface CreateContextOptions {
+  headers: Headers;
+}
+
+interface AuthContext {
+  auth: SignedInAuthObject | SignedOutAuthObject;
+}
+
+// opts: CreateContextOptions, 
+export const createInnerTRPCContext = ({ auth }: AuthContext) => {
+  // console.log(opts.headers)
+  return {
+    // headers: opts.headers,
+    auth,
+  };
+};
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -68,13 +75,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
-  const {req} = opts;
-  const sesh = getAuth(req);
-  const userId = sesh.userId;
+  // const {req} = opts;
+  // const sesh = getAuth(req);
+  // const userId = sesh.userId;
 
+  const clerk = createInnerTRPCContext({ auth: getAuth(opts.req)})
+  console.log('clerk', clerk)
   return {
     db,
-    userId,
+    clerk,
+    // userId,
   }
 };
 
@@ -130,13 +140,22 @@ export const publicProcedure = t.procedure;
 
 const enforceUserAuthentication = t.middleware(async({ctx, next})=>{
 
-  if(!ctx.userId || ctx.userId === null) throw new TRPCError({
+  // if(!ctx.userId || ctx.userId === null) throw new TRPCError({
+  //   code:"UNAUTHORIZED",
+  // });
+
+  // return next({
+  //   ctx: {
+  //     userId: ctx.userId,
+  //   }
+  // })
+  if(!ctx.clerk || ctx.clerk === null) throw new TRPCError({
     code:"UNAUTHORIZED",
   });
 
   return next({
     ctx: {
-      userId: ctx.userId,
+      userId: ctx.clerk,
     }
   })
 })
