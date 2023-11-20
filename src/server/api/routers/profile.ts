@@ -16,8 +16,7 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
-      // const {userId} = ctx.clerk.auth;
-      const userId = 'dummy123'
+      const {userId} = ctx.clerk.auth;
       
       console.log('profile router:', userId);
       
@@ -25,7 +24,6 @@ export const profileRouter = createTRPCRouter({
         code:"INTERNAL_SERVER_ERROR",
         message: "No user"
       });
-    
       
       const profile = await ctx.db.dogProfile.create({
         data: {
@@ -37,7 +35,7 @@ export const profileRouter = createTRPCRouter({
          userId,
         }
       });
-
+      
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return profile;
     }),
@@ -70,6 +68,7 @@ export const profileRouter = createTRPCRouter({
       userId: z.string(),
     }))
     .query(async({ctx, input})=>{
+      console.log('query', input.userId)
       const profile = await ctx.db.dogProfile.findUnique({
         where: {
           userId: input.userId,

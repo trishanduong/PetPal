@@ -1,4 +1,10 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs";
+import { api } from "~/trpc/server";
+import type { RouterOutputs } from "~/trpc/shared";
+
+type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
+
 const Traits = () => {
     return (
      <div>
@@ -43,7 +49,7 @@ const Traits = () => {
    };
    
    const Body = () => {
-   
+
      return (
        <div className="w-full">
          <div className="flex flex-col items-center justify-center p-4">
@@ -60,28 +66,34 @@ const Traits = () => {
      )
    };
 
-const ProfileHeader = () => {
+const ProfileHeader = (props: ProfileWithUser) => {
+  const {profilePic, name, age} = props;
+
   return (
     <div className="flex flex-col items-center mt-5">
       <div className="relative mb-3 w-96 h-96 rounded-full shadow-lg overflow-hidden drop-shadow-md"> {/* Adjust the w-24 h-24 to the size you want */}
           <Image
-            src="https://utfs.io/f/29867864-0d39-4367-a5be-9c1fbdf08d5d-1xbwre.jpeg"
-            alt="Profile image"
+            src={`${profilePic}`}
+            alt={`${name}'s profile picture`}
             layout="fill"
             objectFit="cover" // This will cover the area of the div, and the image will be cropped if not a square
-            className="rounded-full border-4 border-amber-300" // This will ensure the image itself is also rounded if the parent div is rounded
+            className="rounded-full border-4 border-slate-50" // This will ensure the image itself is also rounded if the parent div is rounded
           />
         </div>
-        <div className="pt-3 text-amber-900 text-8xl font-bold">ASTRO</div>
-        <div className="text-amber-800"> 3 years old | 5 miles away</div>
+        <div className="pt-3 text-amber-900 text-8xl font-bold">{name}</div>
+        <div className="text-amber-800"> {age} years old | 5 miles away</div>
     </div>
   )
 };
 
-export default function ProfilePage(){
+export default async function ProfilePage(){
+  const user =  auth();
+
+  const profile = await api.profile.getProfileById.query({userId: user.userId})
+  
   return (
     <div>
-        <ProfileHeader/>
+        <ProfileHeader {...profile}/>
         <Body/>
         {/* <Posts/>
         <Posts/>
