@@ -27,6 +27,20 @@ model DogProfile {
     user       User?   @relation(fields: [userId], references: [id])
     userId     String  @unique
     posts      Post[]
+    traitsId   String? @unique
+    traits     Traits?
+}
+
+model Traits {
+    id           String      @id @default(uuid())
+    species      String?
+    size         String?
+    weight       Float?
+    children     Boolean?
+    neutered     Boolean?
+    energyLevel  Int?
+    dogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
+    dogProfileId BigInt?     @unique
 }
 
 model Post {

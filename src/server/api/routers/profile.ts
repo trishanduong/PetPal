@@ -13,6 +13,7 @@ export const profileRouter = createTRPCRouter({
       bio:z.string().max(255),
       sex: z.string(),
       profilePic: z.string(),
+      
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
@@ -24,7 +25,7 @@ export const profileRouter = createTRPCRouter({
         code:"INTERNAL_SERVER_ERROR",
         message: "No user"
       });
-      
+
       const profile = await ctx.db.dogProfile.create({
         data: {
          name,

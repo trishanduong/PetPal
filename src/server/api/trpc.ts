@@ -23,7 +23,6 @@ import { clerkClient, getAuth, buildClerkProps, SignedInAuthObject, SignedOutAut
 //This functions checks if the user is authenticated and, if so, fetches the user's data, and is passed as props on the server-side rendered page.
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req);
- t
   const user = userId ? await clerkClient.users.getUser(userId) : undefined;
  
   return { props: { ...buildClerkProps(ctx.req, { user }) } };

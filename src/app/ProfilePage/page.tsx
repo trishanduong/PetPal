@@ -47,27 +47,9 @@ const Traits = () => {
      </div>
     )
    };
-   
-   const Body = () => {
-
-     return (
-       <div className="w-full">
-         <div className="flex flex-col items-center justify-center p-4">
-           <div>
-             <div className="font-semibold">Bio: </div>
-             <div>{`I'm just a chunky boy that likes sunbathing and walks at the park! `}</div>
-             <div className="font-semibold">About me:</div>
-             <div>
-               <Traits/>
-             </div>
-           </div>
-         </div>
-       </div>
-     )
-   };
 
 const ProfileHeader = (props: ProfileWithUser) => {
-  const {profilePic, name, age} = props;
+  const {profilePic, name, age, bio} = props;
 
   return (
     <div className="flex flex-col items-center mt-5">
@@ -82,6 +64,12 @@ const ProfileHeader = (props: ProfileWithUser) => {
         </div>
         <div className="pt-3 text-amber-900 text-8xl font-bold">{name}</div>
         <div className="text-amber-800"> {age} years old | 5 miles away</div>
+        <div className="w-full">
+          <div className="font-semibold">Bio: </div>
+          <div>{`${bio}`}</div>
+          <div className="font-semibold">About me:</div>
+          <Traits/>
+        </div>
     </div>
   )
 };
@@ -94,7 +82,7 @@ export default async function ProfilePage(){
   return (
     <div>
         <ProfileHeader {...profile}/>
-        <Body/>
+
         {/* <Posts/>
         <Posts/>
         <Posts/>
