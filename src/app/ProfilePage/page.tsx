@@ -5,14 +5,11 @@ import type { RouterOutputs } from "~/trpc/shared";
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
 
-const Traits = () => {
+const Trait = ({trait}) => {
     return (
      <div>
        {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
-       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">American bully</div>
-       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">No children</div>
-       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">Medium</div>
-       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">90 pounds</div>
+       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">#{typeof trait === 'number'? trait + ' pounds' : trait}</div>
      </div>
     )
    };
@@ -48,8 +45,10 @@ const Traits = () => {
     )
    };
 
-const ProfileHeader = (props: ProfileWithUser) => {
-  const {profilePic, name, age, bio} = props;
+const ProfileHeader = async (props: ProfileWithUser) => {
+  const {profilePic, name, age, bio, traitsId} = props;
+  const traits = Object.values(await api.profile.getTraitsById.query({traitsId: traitsId}));
+  //console.log('traits in page', traits)
 
   return (
     <div className="flex flex-col items-center mt-5">
@@ -68,7 +67,9 @@ const ProfileHeader = (props: ProfileWithUser) => {
           <div className="font-semibold">Bio: </div>
           <div>{`${bio}`}</div>
           <div className="font-semibold">About me:</div>
-          <Traits/>
+          <div className="flex">
+            {traits.map((trait, index) => <Trait trait={trait} key={index}/>)}
+          </div>
         </div>
     </div>
   )
@@ -78,11 +79,10 @@ export default async function ProfilePage(){
   const user =  auth();
 
   const profile = await api.profile.getProfileById.query({userId: user.userId})
-  
+
   return (
     <div>
         <ProfileHeader {...profile}/>
-
         {/* <Posts/>
         <Posts/>
         <Posts/>

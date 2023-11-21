@@ -69,7 +69,7 @@ export const profileRouter = createTRPCRouter({
       userId: z.string(),
     }))
     .query(async({ctx, input})=>{
-      console.log('query', input.userId)
+      //console.log('query', input.userId)
       const profile = await ctx.db.dogProfile.findUnique({
         where: {
           userId: input.userId,
@@ -85,5 +85,26 @@ export const profileRouter = createTRPCRouter({
 
       return profile;
     }),
-  
+
+  //get traits
+  getTraitsById: publicProcedure
+    .input(z.object({
+      traitsId: z.string(),
+    }))
+    .query(async({ctx, input})=>{
+      //console.log('input traitsId')
+      const {species, size, weight, children, neutered} = await ctx.db.traits.findUnique({
+        where: {
+          id: input.traitsId,
+        }
+      });
+      //console.log('traits in router', traits)
+      return {
+        species,
+        size,
+        weight,
+        children, 
+        neutered,
+      };
+    })
 });

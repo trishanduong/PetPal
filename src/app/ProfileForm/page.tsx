@@ -8,7 +8,7 @@ import { UploadButton } from "~/utils/uploadthing";
 
 import { useState } from 'react';
 
-export enum SexEnum {
+enum SexEnum {
   female = "female",
   male = "male",
   other = "other",

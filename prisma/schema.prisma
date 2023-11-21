@@ -36,8 +36,8 @@ model Traits {
     species      String?
     size         String?
     weight       Float?
-    children     Boolean?
-    neutered     Boolean?
+    children     String?
+    neutered     String?
     energyLevel  Int?
     dogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
     dogProfileId BigInt?     @unique
