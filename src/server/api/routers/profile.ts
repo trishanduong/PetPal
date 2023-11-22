@@ -2,7 +2,14 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
-import type { DogProfile } from "@prisma/client";
+// import type { DogProfile } from "@prisma/client";
+import type { Traits } from '@prisma/client';
+
+
+function isTrait(obj: Traits){
+  return obj && typeof obj === 'object' && 'species' in obj; // Add more checks as necessary
+}
+
 
 export const profileRouter = createTRPCRouter({
   //Create a new profile (sign up)
@@ -43,6 +50,9 @@ export const profileRouter = createTRPCRouter({
 
   //Update or change the profile pic
   updateProfilePic: privateProcedure
+    .input(z.object({
+      profilePic: z.string(),
+    }))
     .mutation(async({ctx, input})=>{
       const {profilePic} = input;
       const {userId} = ctx;
@@ -93,18 +103,20 @@ export const profileRouter = createTRPCRouter({
     }))
     .query(async({ctx, input})=>{
       //console.log('input traitsId')
-      const {species, size, weight, children, neutered} = await ctx.db.traits.findUnique({
+      const traits = await ctx.db.traits.findUnique({
         where: {
           id: input.traitsId,
         }
       });
+
+      if (!traits || !isTrait(traits)) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Traits not found',
+        });
+      }
+  
       //console.log('traits in router', traits)
-      return {
-        species,
-        size,
-        weight,
-        children, 
-        neutered,
-      };
+      return traits;
     })
 });

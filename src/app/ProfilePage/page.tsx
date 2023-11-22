@@ -4,28 +4,21 @@ import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
+type TraitProps = {
+  trait: string;
+  value: number | string;
+};
 
-const Trait = ({trait}) => {
+const Trait:React.FC<TraitProps>= ({trait, value}) => {
     return (
      <div>
        {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
-       <div className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">#{typeof trait === 'number'? trait + ' pounds' : trait}</div>
+       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">#{typeof value === 'number'? value + ' pounds' : value}</div>
      </div>
     )
    };
    
-   const Posts = () => {
-     return (
-       <div className="rounded-lg bg-amber-400 w-full h-full p-3 mt-6">
-         <div>
-           <span className="text-3xl py-2">✦ {`Prompt`}</span>
-           <div className="rounded-lg bg-slate-900 h-96">
-         </div>
-         </div>
-       </div>
-     )
-   }
-   
+
    const Buttons = () => {
     return (
      <div className="px-6 py-4">
@@ -47,9 +40,10 @@ const Trait = ({trait}) => {
 
 const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
-  const traits = Object.values(await api.profile.getTraitsById.query({traitsId: traitsId}));
-  //console.log('traits in page', traits)
+  if(!traitsId) return <div>Error</div>
 
+  const traits = Object.entries(await api.profile.getTraitsById.query({traitsId: traitsId}));
+  
   return (
     <div className="flex flex-col items-center mt-5">
       <div className="relative mb-3 w-96 h-96 rounded-full shadow-lg overflow-hidden drop-shadow-md"> {/* Adjust the w-24 h-24 to the size you want */}
@@ -68,7 +62,9 @@ const ProfileHeader = async (props: ProfileWithUser) => {
           <div>{`${bio}`}</div>
           <div className="font-semibold">About me:</div>
           <div className="flex">
-            {traits.map((trait, index) => <Trait trait={trait} key={index}/>)}
+            {traits.map(([trait, value], index) => {
+              if(!value || trait==='id' || trait === 'dogProfileId' || typeof value==='bigint' || trait === 'energyLevel') return
+              return <Trait trait={trait} value={value} key={index}/>})}
           </div>
         </div>
     </div>
@@ -77,16 +73,18 @@ const ProfileHeader = async (props: ProfileWithUser) => {
 
 export default async function ProfilePage(){
   const user =  auth();
+  if (!user.userId) {
+    // Handle the case when userId is null
+    // e.g., return a message, redirect, etc.
+    return <div>User not authenticated</div>;
+  }
 
   const profile = await api.profile.getProfileById.query({userId: user.userId})
 
   return (
     <div>
         <ProfileHeader {...profile}/>
-        {/* <Posts/>
-        <Posts/>
-        <Posts/>
-        <Buttons/> */}
+        {/* <Buttons/> */}
     </div>
   )
 }
