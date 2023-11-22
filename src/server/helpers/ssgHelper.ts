@@ -6,6 +6,6 @@ import { appRouter } from "~/server/api/root";
 // data is there when page loads (loading state will never be hit)
 export const generateSSGHelper = () => createServerSideHelpers({
       router: appRouter,
-      ctx: {db, userId:null },
+      ctx: {db },
       transformer: superjson, // optional - adds superjson serialization
   });

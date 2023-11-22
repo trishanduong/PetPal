@@ -1,4 +1,4 @@
-import { api } from "~/trpc/server";
+
 import { ProfileCard } from "./_components/ProfileCard";
 import { auth } from "@clerk/nextjs";
 
