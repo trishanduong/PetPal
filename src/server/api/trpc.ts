@@ -15,8 +15,10 @@ import { ZodError } from "zod";
 
 import { db } from "~/server/db";
 
-import { clerkClient, getAuth, buildClerkProps, SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/server";
+import type {SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/server";
+import { clerkClient, getAuth, buildClerkProps,} from "@clerk/nextjs/server";
 
+import * as trpcNext from '@trpc/server/adapters/next';
 //Alternative: 
 
 //When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
@@ -72,7 +74,7 @@ export const createInnerTRPCContext = ({ auth }: AuthContext) => {
  */
 
 
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: trpcNext.CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
   // const {req} = opts;
   // const sesh = getAuth(req);
