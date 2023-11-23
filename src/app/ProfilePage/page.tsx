@@ -1,19 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Image from "next/image";
 import { auth } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
+import PostBox from "../_components/Post";
+import type { Post } from "@prisma/client";
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
 type TraitProps = {
   trait: string;
-  value: number | string;
+  value: TraitValue;
 };
 
+type TraitValue = number | string
+
 const Trait:React.FC<TraitProps>= ({trait, value}) => {
+  // console.log('trait', trait);
+  // console.log('value', value);
+  
     return (
      <div>
        {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
-       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">#{typeof value === 'number'? value + ' pounds' : value}</div>
+       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">
+        {/* #{typeof value === 'number'? value + ' pounds' : value} */}
+        {value}
+       </div>
      </div>
     )
    };
@@ -38,13 +49,15 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
     )
    };
 
-const ProfileHeader = (props: ProfileWithUser) => {
+const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
   if(!traitsId) return <div>Error</div>
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call
-  const traits: [string, unknown][] = Object.entries(api.traits.getTraitsById.query({traitsId: traitsId}));
-  
+  const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
+  //console.log('traits', traits)
+  const tag = Object.entries(traits)
+
   return (
     <div className="flex flex-col items-center mt-5">
       <div className="relative mb-3 w-96 h-96 rounded-full shadow-lg overflow-hidden drop-shadow-md"> {/* Adjust the w-24 h-24 to the size you want */}
@@ -63,15 +76,16 @@ const ProfileHeader = (props: ProfileWithUser) => {
           <div>{`${bio}`}</div>
           <div className="font-semibold">About me:</div>
           <div className="flex">
-            {traits.map(([trait, value], index) => {
+            {tag.map(([trait, value], index)=> {
               if(!value || trait==='id' || trait === 'dogProfileId' || typeof value==='bigint' || trait === 'energyLevel') return
-              return <Trait trait={trait} value={value} key={index}/>})}
+              return <Trait key={index} trait={trait} value={value}/>}
+            )}
           </div>
         </div>
     </div>
   )
 };
-
+//
 export default async function ProfilePage(){
   const user =  auth();
   if (!user.userId) {
@@ -82,11 +96,14 @@ export default async function ProfilePage(){
 
   const profile = await api.profile.getProfileById.query({userId: user.userId});
   const {id} = profile;
-  const posts = api.post.getPostsByUser.query({dogProfileId: id});
+  const posts: Post[] = await api.post.getPostsByUser.query({dogProfileId: id});
   //console.log('posts', posts)
   return (
     <div>
-        <ProfileHeader {...profile}/>
+      <ProfileHeader {...profile}/>
+      {posts.map((post: Post)=> 
+        <PostBox key={post.id} post={post}/>)
+      }
         {/* <Buttons/> */}
     </div>
   )

@@ -81,7 +81,7 @@ export const createTRPCContext = (opts: trpcNext.CreateNextContextOptions) => {
   // const userId = sesh.userId;
 
   const clerk = createInnerTRPCContext({ auth: getAuth(opts.req)})
-  console.log('clerk', clerk)
+  //console.log('clerk', clerk)
   return {
     db,
     clerk,

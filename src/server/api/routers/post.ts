@@ -12,8 +12,6 @@ export const postRouter = createTRPCRouter({
           dogProfileId: input.dogProfileId,
         }
       })
-      return {
-        posts,
-      };
+      return posts;
     })
 });
