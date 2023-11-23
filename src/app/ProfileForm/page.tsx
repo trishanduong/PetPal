@@ -7,6 +7,8 @@ import {useForm, type SubmitHandler} from 'react-hook-form';
 import { UploadButton } from "~/utils/uploadthing";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 enum SexEnum {
   female = "female",
@@ -23,6 +25,7 @@ export type FormInputs = {
 };
 
 export default function ProfileForm() {
+  const router = useRouter();
   const [url, setUrl] = useState('')
   const {
     register,
@@ -34,9 +37,9 @@ export default function ProfileForm() {
   const profile = api.profile.create.useMutation();
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
-    await profile.mutateAsync({...data, profilePic: url})
+    await profile.mutateAsync({...data, profilePic: url});
+    router.push('/ProfilePage');
   }
-
 
   return (
     <div>
@@ -48,10 +51,10 @@ export default function ProfileForm() {
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
                 // console.log("Files: ", res); console.log('url of file', res[0]?.url);
-                alert("Upload Completed");
+                // alert("Upload Completed");
                 if(res[0]?.url !== undefined) setUrl(res[0]?.url);
                 // if(res[0]?.url !== undefined) await profile.mutateAsync({ profilePic: res[0]?.url})
-                console.log('url data was added to form')
+                //console.log('url data was added to form')
               }}
               onUploadError={(error: Error) => {
                 // Do something with the error.

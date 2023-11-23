@@ -22,8 +22,7 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
      <div>
        {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
        <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">
-        {/* #{typeof value === 'number'? value + ' pounds' : value} */}
-        {value}
+        #{typeof value === 'number'? value + ' pounds' : value}
        </div>
      </div>
     )
@@ -53,7 +52,6 @@ const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
   if(!traitsId) return <div>Error</div>
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call
   const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
   //console.log('traits', traits)
   const tag = Object.entries(traits)
@@ -90,7 +88,6 @@ export default async function ProfilePage(){
   const user =  auth();
   if (!user.userId) {
     // Handle the case when userId is null
-    // e.g., return a message, redirect, etc.
     return <div>User not authenticated</div>;
   }
 
@@ -101,10 +98,12 @@ export default async function ProfilePage(){
   return (
     <div>
       <ProfileHeader {...profile}/>
-      {posts.map((post: Post)=> 
-        <PostBox key={post.id} post={post}/>)
+      {
+        posts.map((post: Post) => 
+        <PostBox key={post.id} post={post}/>
+        )
       }
-        {/* <Buttons/> */}
+      {/* <Buttons/> */}
     </div>
   )
 }

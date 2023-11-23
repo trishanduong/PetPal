@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 import type { Traits } from '@prisma/client';
 
@@ -8,7 +8,27 @@ function isTrait(obj: Traits){
     return obj && typeof obj === 'object' && 'species' in obj; 
   }
   
+  
+
+  //   dogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
+  //   dogProfileId
 export const traitsRouter = createTRPCRouter({
+  create: privateProcedure
+    .input(z.object({
+      species: z.string(),
+      size: z.string(),
+      weight: z.number(),
+      children: z.string(),
+      neutered: z.string(),
+      energyLevel: z.number(),
+      dogProfileId: z.bigint(),
+    }))
+    .query(async({ctx, input})=>{
+      const traits = await ctx.db.traits.create({
+      });
+      console.log('traits', traits)
+    }),
+
   //get traits
   getTraitsById: publicProcedure
     .input(z.object({
