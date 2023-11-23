@@ -95,28 +95,4 @@ export const profileRouter = createTRPCRouter({
 
       return profile;
     }),
-
-  //get traits
-  getTraitsById: publicProcedure
-    .input(z.object({
-      traitsId: z.string(),
-    }))
-    .query(async({ctx, input})=>{
-      //console.log('input traitsId')
-      const traits = await ctx.db.traits.findUnique({
-        where: {
-          id: input.traitsId,
-        }
-      });
-
-      if (!traits || !isTrait(traits)) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Traits not found',
-        });
-      }
-  
-      //console.log('traits in router', traits)
-      return traits;
-    })
 });

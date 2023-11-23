@@ -13,6 +13,7 @@ datasource db {
 
 model User {
     id      String      @id @default(uuid())
+    clerkId String      @unique
     profile DogProfile?
 }
 
@@ -24,7 +25,7 @@ model DogProfile {
     age        Int
     location   String?
     bio        String  @db.String(255)
-    user       User    @relation(fields: [userId], references: [id])
+    user       User    @relation(fields: [userId], references: [clerkId])
     userId     String  @unique
     posts      Post[]
     traitsId   String? @unique
@@ -44,12 +45,24 @@ model Traits {
 }
 
 model Post {
-    id           BigInt      @id @default(autoincrement())
-    name         String
-    createdAt    DateTime    @default(now())
-    updatedAt    DateTime    @updatedAt
+    id       BigInt  @id @default(autoincrement())
+    prompt   Prompt  @relation(fields: [promptId], references: [id])
+    promptId BigInt
+    image    String
+    answer   String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     DogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
     dogProfileId BigInt?
 
     @@index([dogProfileId])
+    @@index([promptId])
+}
+
+model Prompt {
+    id     BigInt @id @default(autoincrement())
+    prompt String
+    posts  Post[]
 }

@@ -38,11 +38,12 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
     )
    };
 
-const ProfileHeader = async (props: ProfileWithUser) => {
+const ProfileHeader = (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
   if(!traitsId) return <div>Error</div>
 
-  const traits = Object.entries(await api.profile.getTraitsById.query({traitsId: traitsId}));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call
+  const traits: [string, unknown][] = Object.entries(api.traits.getTraitsById.query({traitsId: traitsId}));
   
   return (
     <div className="flex flex-col items-center mt-5">
@@ -79,8 +80,10 @@ export default async function ProfilePage(){
     return <div>User not authenticated</div>;
   }
 
-  const profile = await api.profile.getProfileById.query({userId: user.userId})
-
+  const profile = await api.profile.getProfileById.query({userId: user.userId});
+  const {id} = profile;
+  const posts = api.post.getPostsByUser.query({dogProfileId: id});
+  //console.log('posts', posts)
   return (
     <div>
         <ProfileHeader {...profile}/>
