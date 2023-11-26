@@ -32,7 +32,7 @@ export const promptRouter = createTRPCRouter({
   getAllPrompts: publicProcedure
     .query(async({ctx})=>{
       const prompts = await ctx.db.prompt.findMany({});
-      console.log('prompts', prompts);
+      //console.log('prompts', prompts);
       return prompts;
     })
 });
