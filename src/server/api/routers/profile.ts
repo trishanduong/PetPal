@@ -2,14 +2,11 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
-// import type { DogProfile } from "@prisma/client";
 import type { Traits } from '@prisma/client';
-
 
 function isTrait(obj: Traits){
   return obj && typeof obj === 'object' && 'species' in obj; // Add more checks as necessary
 }
-
 
 export const profileRouter = createTRPCRouter({
   //Create a new profile (sign up)
@@ -24,9 +21,7 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
-      const {userId} = ctx.clerk.auth;
-      
-      console.log('profile router:', userId);
+      const {userId} = ctx.clerk;
       
       if(typeof userId !== "string") throw new TRPCError({
         code:"INTERNAL_SERVER_ERROR",
@@ -64,7 +59,7 @@ export const profileRouter = createTRPCRouter({
 
       const profile = await ctx.db.dogProfile.update({
         where: {
-          userId: userId, // Assuming 'id' is the field name for user ID
+          userId: userId,
         },
         data: {
           profilePic},
@@ -85,7 +80,8 @@ export const profileRouter = createTRPCRouter({
           userId: input.userId,
         }
       })
-      
+
+      //console.log('profile in profile router', profile)
       if (!profile) {
         throw new TRPCError({
           code: 'NOT_FOUND',

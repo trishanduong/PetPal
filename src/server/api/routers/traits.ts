@@ -7,11 +7,7 @@ import type { Traits } from '@prisma/client';
 function isTrait(obj: Traits){
     return obj && typeof obj === 'object' && 'species' in obj; 
   }
-  
-  
 
-  //   dogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
-  //   dogProfileId
 export const traitsRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({
@@ -23,10 +19,21 @@ export const traitsRouter = createTRPCRouter({
       energyLevel: z.number(),
       dogProfileId: z.bigint(),
     }))
-    .query(async({ctx, input})=>{
+    .mutation(async({ctx, input})=>{
+
       const traits = await ctx.db.traits.create({
+        data: {
+          species: input.species,
+          size: input.size,
+          weight: input.weight,
+          children: input.children,
+          neutered: input.neutered,
+          energyLevel: input.energyLevel,
+          dogProfileId: input.dogProfileId,
+        }
       });
-      console.log('traits', traits)
+
+      console.log('traits', traits);
     }),
 
   //get traits

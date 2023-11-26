@@ -15,8 +15,6 @@ type TraitProps = {
 type TraitValue = number | string
 
 const Trait:React.FC<TraitProps>= ({trait, value}) => {
-  // console.log('trait', trait);
-  // console.log('value', value);
   
     return (
      <div>
@@ -51,9 +49,9 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
 const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
   if(!traitsId) return <div>Error</div>
-
+  // console.log('hi this is props', props)
   const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
-  //console.log('traits', traits)
+  console.log('traits', traits)
   const tag = Object.entries(traits)
 
   return (
@@ -83,16 +81,18 @@ const ProfileHeader = async (props: ProfileWithUser) => {
     </div>
   )
 };
-//
+
+
 export default async function ProfilePage(){
   const user =  auth();
   if (!user.userId) {
     // Handle the case when userId is null
     return <div>User not authenticated</div>;
   }
-
+  
   const profile = await api.profile.getProfileById.query({userId: user.userId});
   const {id} = profile;
+
   const posts: Post[] = await api.post.getPostsByUser.query({dogProfileId: id});
   //console.log('posts', posts)
   return (

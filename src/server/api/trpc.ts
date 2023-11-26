@@ -18,7 +18,6 @@ import { db } from "~/server/db";
 import type {SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/server";
 import { clerkClient, getAuth, buildClerkProps,} from "@clerk/nextjs/server";
 
-import * as trpcNext from '@trpc/server/adapters/next';
 //Alternative: 
 
 //When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
@@ -53,16 +52,9 @@ interface CreateContextOptions {
   headers: Headers;
 }
 
-interface AuthContext {
-  auth: SignedInAuthObject | SignedOutAuthObject;
-}
-
-// opts: CreateContextOptions, 
-export const createInnerTRPCContext = ({ auth }: AuthContext) => {
-  // console.log(opts.headers)
+export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    // headers: opts.headers,
-    auth,
+    headers: opts.headers,
   };
 };
 
@@ -74,14 +66,11 @@ export const createInnerTRPCContext = ({ auth }: AuthContext) => {
  */
 
 
-export const createTRPCContext = (opts: trpcNext.CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
-  // const {req} = opts;
-  // const sesh = getAuth(req);
-  // const userId = sesh.userId;
-
-  const clerk = createInnerTRPCContext({ auth: getAuth(opts.req)})
+  const clerk = getAuth(opts.req);
   //console.log('clerk', clerk)
+
   return {
     db,
     clerk,

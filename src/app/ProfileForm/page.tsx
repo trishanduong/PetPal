@@ -62,7 +62,6 @@ export default function ProfileForm() {
               }}
             />
 
-          {/* <input type="file" {...register("profilePic")} /> */}
             <label>{`Whats your dog's name?`}</label>
             <input {...register("name",{ required: true })} />
 
