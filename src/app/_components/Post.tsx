@@ -2,7 +2,12 @@ import { api } from "~/trpc/server";
 import type { Post, Prompt } from "@prisma/client";
 import Image from "next/image";
 
-const PostBox = async(props) => {
+type PostBoxProps = {
+  key: bigint,
+  post: Post
+};
+
+const PostBox = async(props: PostBoxProps) => {
     const post: Post = props.post;
     const {promptId, image, answer} = post;
 

@@ -32,8 +32,7 @@ export const traitsRouter = createTRPCRouter({
           dogProfileId: input.dogProfileId,
         }
       });
-
-      console.log('traits', traits);
+      return traits;
     }),
 
   //get traits

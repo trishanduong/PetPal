@@ -2,11 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
-import type { Traits } from '@prisma/client';
 
-function isTrait(obj: Traits){
-  return obj && typeof obj === 'object' && 'species' in obj; // Add more checks as necessary
-}
 
 export const profileRouter = createTRPCRouter({
   //Create a new profile (sign up)

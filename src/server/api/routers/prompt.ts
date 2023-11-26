@@ -27,5 +27,12 @@ export const promptRouter = createTRPCRouter({
       });
 
     return prompt;
-  })
+  }),
+  //Prompts for the POSTS form ('/prompts')
+  getAllPrompts: publicProcedure
+    .query(async({ctx})=>{
+      const prompts = await ctx.db.prompt.findMany({});
+      console.log('prompts', prompts);
+      return prompts;
+    })
 });
