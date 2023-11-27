@@ -19,7 +19,7 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
     return (
      <div>
        {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
-       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2">
+       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2 drop-shadow-sm">
         #{typeof value === 'number'? value + ' pounds' : value}
        </div>
      </div>
@@ -29,15 +29,15 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
 
    const Buttons = () => {
     return (
-     <div className="px-6 py-4">
+     <div className="flex justify-around py-4">
        <ul className="flex">
            <li className="mr-6">
-             <button className="bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full">
+             <button className="bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full drop-shadow-lg">
                ❌
              </button> 
            </li>
            <li className="mr-6">
-             <button className="font-xl bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full mr-2">
+             <button className="font-xl bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full mr-2 drop-shadow-md">
                💗
              </button>
            </li>
@@ -103,7 +103,7 @@ export default async function ProfilePage(){
         <PostBox key={post.id} post={post}/>
         )
       }
-      {/* <Buttons/> */}
+      <Buttons/>
     </div>
   )
 }

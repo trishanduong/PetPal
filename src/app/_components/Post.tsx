@@ -16,10 +16,10 @@ const PostBox = async(props: PostBoxProps) => {
 
     return (
       <>
-      <div className="rounded-lg bg-amber-400 w-full h-full p-3 mt-6 shadow-md">
+      <div className="rounded-lg bg-amber-300 w-full h-full p-3 mt-6 shadow-md">
         <div>
-          <span className="text-3xl py-2">✦ {prompt}</span>
-          <div>{answer}</div>
+          <span className="text-3xl py-2 font-bold text-orange-950">✦ {prompt}</span>
+          <div className="text-center text-2xl text-orange-800 font-medium py-2 ">{answer}</div>
           <div style={{ position: 'relative', height: '400px' }}>
             <Image className="rounded-md" src={`${image}`} alt={`${answer}`} fill={true} style={{
               objectFit: 'cover'

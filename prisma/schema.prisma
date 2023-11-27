@@ -18,18 +18,26 @@ model User {
 }
 
 model DogProfile {
-    id         BigInt  @id @default(autoincrement())
+    id         BigInt   @id @default(autoincrement())
     profilePic String?
     name       String
     sex        String
     age        Int
-    location   String?
-    bio        String  @db.String(255)
-    user       User    @relation(fields: [userId], references: [clerkId])
-    userId     String  @unique
+    bio        String   @db.String(255)
+    user       User     @relation(fields: [userId], references: [clerkId])
+    userId     String   @unique
     posts      Post[]
-    traitsId   String? @unique
+    traitsId   String?  @unique
     traits     Traits?
+    location   Location @relation(fields: [locationId], references: [id])
+    locationId BigInt   @unique
+}
+
+model Location {
+    id         BigInt      @id @default(autoincrement())
+    latitude   Float
+    longitude  Float
+    dogProfile DogProfile?
 }
 
 model Traits {
@@ -48,7 +56,7 @@ model Post {
     id       BigInt  @id @default(autoincrement())
     prompt   Prompt  @relation(fields: [promptId], references: [id])
     promptId BigInt
-    image    String
+    image    String?
     answer   String?
 
     createdAt DateTime @default(now())

@@ -15,7 +15,7 @@ export const postRouter = createTRPCRouter({
     .input(z.array(data))
     .mutation((async ({ctx, input})=>{
       console.log('input', input)
-      const posts = await ctx.db.post.createMany({
+      await ctx.db.post.createMany({
         data: input.map(postData => ({
           promptId: BigInt(postData.promptId),
           dogProfileId: BigInt(postData.dogProfileId),

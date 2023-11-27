@@ -15,7 +15,6 @@ import { ZodError } from "zod";
 
 import { db } from "~/server/db";
 
-import type {SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/server";
 import { clerkClient, getAuth, buildClerkProps,} from "@clerk/nextjs/server";
 
 //Alternative: 
@@ -53,6 +52,7 @@ interface CreateContextOptions {
 }
 
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  
   return {
     headers: opts.headers,
   };
@@ -69,7 +69,6 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // Fetch stuff that depends on the request
   const clerk = getAuth(opts.req);
-  //console.log('clerk', clerk)
 
   return {
     db,
