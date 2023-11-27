@@ -3,23 +3,28 @@ import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
-const DataSchema = z.object({
+const data = z.object({
+  dogProfileId: z.string(),
   image: z.string(),
   answer: z.string().optional(),
+  promptId: z.string(),
 });
   
-const FormInputsSchema = z.record(DataSchema);
-
 export const postRouter = createTRPCRouter({
   createPosts: privateProcedure
-    .input(FormInputsSchema)
-    .mutation((({ctx, input})=>{
+    .input(z.array(data))
+    .mutation((async ({ctx, input})=>{
       console.log('input', input)
-      // const post = await ctx.db.post.createMany({
-      //   promptId: input.promptId,
-      //   image: input.image,
-      //   answer: input.answer,
-      // })
+      const posts = await ctx.db.post.createMany({
+        data: input.map(postData => ({
+          promptId: BigInt(postData.promptId),
+          dogProfileId: BigInt(postData.dogProfileId),
+          image: postData.image,
+          answer: postData.answer,
+        })),
+      });
+      
+      return;
     })),
   getPostsByUser: publicProcedure
     .input(z.object({ dogProfileId: z.bigint() }))
