@@ -5,6 +5,8 @@ import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
 import PostBox from "../_components/Post";
 import type { Post } from "@prisma/client";
+import Buttons from "../_components/Buttons";
+
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
 type TraitProps = {
@@ -26,25 +28,6 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
     )
    };
    
-
-   const Buttons = () => {
-    return (
-     <div className="flex justify-around py-4">
-       <ul className="flex">
-           <li className="mr-6">
-             <button className="bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full drop-shadow-lg">
-               ❌
-             </button> 
-           </li>
-           <li className="mr-6">
-             <button className="font-xl bg-amber-50 hover:bg-amber-300 text-3xl font-bold py-2 px-3 rounded-full mr-2 drop-shadow-md">
-               💗
-             </button>
-           </li>
-         </ul>
-     </div>
-    )
-   };
 
 const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
@@ -103,7 +86,7 @@ export default async function ProfilePage(){
         <PostBox key={post.id} post={post}/>
         )
       }
-      <Buttons/>
+      <Buttons></Buttons>
     </div>
   )
 }
