@@ -1,36 +1,50 @@
+import Image from "next/image";
 
+// const Hero = () => {
+//   return (
+//     <section className="bg-white dark:bg-yellow-500 h-screen w-screen">
+//       <div className="p-10">
+        
+//       </div>  
+//     </section>
 
-const Hero = () => {
-  return (
-    <section className="bg-white dark:bg-yellow-500">
-      <div className="grid max-w-screen-2xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-          <div className="mr-auto place-self-center lg:col-span-7">
-              <h1 className="max-w-2xl ml-5 mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-amber-900">The ultimate doggy playdate app.</h1>
-              <p className="max-w-2xl ml-6 mt-3 mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-amber-800">Help your dog find their soul playmate!</p>
-              <a href="#" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
-                  Get started
-                  <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                  </svg>
-              </a>
-              <a href="#" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                  Speak to Sales
-              </a> 
-          </div>
-          <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <img src={'public/homepage.png'} alt="mockup" />
-              <div className="bg-yellow-300 rounded-lg w-4/6"></div>
-          </div>                
-      </div>
-    </section>
+//   )
+// }
 
-  )
+export function HeroSection() {
+    return (
+        <div className="flex bg-yellow-500 h-[85vh]">
+            <div className="w-2/5 flex items-center justify-center">
+              <div className="flex items-center justify-center bg-amber-200 rounded-full h-150 w-100"> 
+                <Image src="https://utfs.io/f/972933f9-6b52-4432-a174-79bf54337e03-80z7de.png" width="450" height="450" alt="mockup" />
+              </div>
+              <div className="absolute left-[20%] top-[30%] fade-in-out hover:animate-bounce">
+                <p className="text-4xl">❤️</p>
+              </div>
+              <div className="absolute left-[10%] top-[45%] fade-in-out hover:animate-bounce">
+                <p className="text-4xl">❤️</p>
+              </div>
+              <div className="absolute left-[29%] top-[40%] fade-in-out hover:animate-bounce">
+                <p className="text-4xl">❤️</p>
+              </div>
+            </div>
+            <div className="w-3/5 flex flex-col justify-center items-start p-10">
+                <h1 className="text-7xl font-extrabold p-3 mb-5 text-amber-950 animate-text bg-gradient-to-r from-amber-900 via-amber-600 to-orange-800 bg-clip-text text-transparent" >The ultimate doggy playdate app.</h1>
+                <p className="text-2xl mb-8 p-3 text-amber-900">Help your dog find their soul playmate!</p>
+                <button className="px-6 py-3 bg-yellow-800 text-white rounded-lg hover:bg-amber-950 shadow-md">
+                    Get Started
+                </button>
+            </div>
+            
+        </div>
+    );
 }
+
 export default function Home() {
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-amber-200">
-      <Hero></Hero>
+    <main className="flex min-h-screen flex-col items-center bg-amber-200 w-screen">
+      <HeroSection></HeroSection>
     </main>
   );
 }

@@ -7,13 +7,9 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
-import { PrismaClient, Prisma } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
 export const followRouter = createTRPCRouter({
   //update 'following' of dog profile:
-  updateFollowing: privateProcedure
+  addFollowing: privateProcedure
     .input(z.object({
       currentUserId: z.bigint(),
       likedId: z.bigint(),
@@ -26,4 +22,4 @@ export const followRouter = createTRPCRouter({
         }
       });
     }),
-});
+  });

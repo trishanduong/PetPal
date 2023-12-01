@@ -5,10 +5,10 @@ export default function Nav(){
   return (
     <div>
       <nav>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <Link href="/">
-            <div className="font-bold text-slate-800 text-3xl pr-30">
-              PetPal
+            <div className="font-bold text-slate-800 text-3xl pl-5 py-2 pr-30">
+              PetPal 🐾
             </div>
           </Link>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
