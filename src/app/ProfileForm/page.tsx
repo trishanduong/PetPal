@@ -1,6 +1,5 @@
 'use client'
 
-import { useUser } from '@clerk/nextjs';
 import { api } from '~/trpc/react';
 
 import {useForm, type SubmitHandler} from 'react-hook-form';
@@ -10,6 +9,8 @@ import { useState} from 'react';
 
 import { useRouter } from 'next/navigation';
 import FormProgressBar from '../_components/FormProgressBar';
+
+
 enum SexEnum {
   female = "female",
   male = "male",
@@ -24,28 +25,28 @@ export type FormInputs = {
   profilePic: string,
 };
 
-export default function ProfileForm() {
 
+export default function ProfileForm() {
+  const [percent, setPercent] = useState(5);
   const router = useRouter();
- 
   const {
     register,
     handleSubmit,
     setValue,
   } = useForm<FormInputs>();
 
-  const user = useUser();
-  if(!user) return null;
   const profile = api.profile.create.useMutation();
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
+    setPercent(30);
+    console.log(data)
     await profile.mutateAsync({...data});
-    router.push('/ProfilePage');
+    router.push('/ProfileForm/TraitsForm')
   }
 
   return (
     <div className='mt-5'>
-      <FormProgressBar percent={30}/>
+      <FormProgressBar percent={percent}/>
       <div className="font-bold text-xl mb-2">Introduce your fur baby!</div>
         <div className="w-full">
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
@@ -84,7 +85,7 @@ export default function ProfileForm() {
             <textarea {...register("bio", { required: true, maxLength:255})} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'/>
           
             <div className="flex justify-center">
-              <input type="submit" value="Next" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
+              <input type="submit" value="NEXT" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"/>
             </div>
 
           </form>

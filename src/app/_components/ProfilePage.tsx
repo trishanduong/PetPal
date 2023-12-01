@@ -3,10 +3,8 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
-import PostBox from "../_components/Post";
+import PostBox from "./Post";
 import type { Post } from "@prisma/client";
-import Buttons from "../_components/Buttons";
-
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
 type TraitProps = {
@@ -31,6 +29,7 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
 
 const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId} = props;
+  
   if(!traitsId) return <div>Error</div>
   // console.log('hi this is props', props)
   const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
@@ -74,10 +73,11 @@ export default async function ProfilePage(){
   }
   
   const profile = await api.profile.getProfileById.query({userId: user.userId});
+  console.log("profile in profilepage", profile)
   const {id} = profile;
 
   const posts: Post[] = await api.post.getPostsByUser.query({dogProfileId: id});
-  //console.log('posts', posts)
+
   return (
     <div>
       <ProfileHeader {...profile}/>
@@ -86,7 +86,6 @@ export default async function ProfilePage(){
         <PostBox key={post.id} post={post}/>
         )
       }
-      <Buttons></Buttons>
     </div>
   )
 }

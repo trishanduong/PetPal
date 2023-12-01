@@ -2,6 +2,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
+
 import type { Traits } from '@prisma/client';
 
 function isTrait(obj: Traits){
@@ -20,7 +21,6 @@ export const traitsRouter = createTRPCRouter({
       dogProfileId: z.bigint(),
     }))
     .mutation(async({ctx, input})=>{
-
       const traits = await ctx.db.traits.create({
         data: {
           species: input.species,
@@ -32,6 +32,16 @@ export const traitsRouter = createTRPCRouter({
           dogProfileId: input.dogProfileId,
         }
       });
+      const traitsId = traits.id;
+      const dogProfile = await ctx.db.dogProfile.update({
+        where: {
+          id: input.dogProfileId,
+        },
+        data: {
+          traitsId: traitsId,
+        },
+      });
+      console.log('update dog profile traits', dogProfile);
       return traits;
     }),
 

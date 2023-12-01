@@ -11,33 +11,40 @@ datasource db {
     relationMode = "prisma"
 }
 
-model User {
-    id      String      @id @default(uuid())
-    clerkId String      @unique
-    profile DogProfile?
-}
-
 model DogProfile {
-    id         BigInt   @id @default(autoincrement())
-    profilePic String?
-    name       String
-    sex        String
-    age        Int
-    bio        String   @db.String(255)
-    user       User     @relation(fields: [userId], references: [clerkId])
-    userId     String   @unique
-    posts      Post[]
-    traitsId   String?  @unique
-    traits     Traits?
-    location   Location @relation(fields: [locationId], references: [id])
-    locationId BigInt   @unique
+    id            BigInt         @id @default(autoincrement())
+    userId        String         @unique
+    profilePic    String?
+    name          String
+    sex           String
+    age           Int
+    bio           String         @db.String(255)
+    posts         Post[]
+    traitsId      String?        @unique
+    traits        Traits?
+    city          String?
+    dogPreference DogPreference?
+
+    followedBy Follows[] @relation("followedBy")
+    following  Follows[] @relation("following")
 }
 
-model Location {
-    id         BigInt      @id @default(autoincrement())
-    latitude   Float
-    longitude  Float
-    dogProfile DogProfile?
+model DogPreference {
+    id            String     @id @default(uuid())
+    lowerAgeLimit Int
+    upperAgeLimit Int
+    gender        String
+    dog           DogProfile @relation(fields: [dogProfileId], references: [id])
+    dogProfileId  BigInt     @unique
+}
+
+model Follows {
+    followedBy   DogProfile @relation("followedBy", fields: [followedById], references: [id])
+    followedById BigInt
+    following    DogProfile @relation("following", fields: [followingId], references: [id])
+    followingId  BigInt
+
+    @@id([followingId, followedById])
 }
 
 model Traits {

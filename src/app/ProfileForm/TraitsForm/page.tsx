@@ -2,6 +2,9 @@
 import {useForm, type SubmitHandler} from 'react-hook-form';
 import { useAuth } from "@clerk/nextjs";
 import { api } from '~/trpc/react';
+
+import { useRouter } from 'next/navigation';
+
 import FormProgressBar from '~/app/_components/FormProgressBar';
 
 type FormInputs = {
@@ -15,19 +18,20 @@ type FormInputs = {
 
 
 export default function TraitsForm () {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
    } = useForm<FormInputs>();
 
   const {userId} = useAuth();
+  console.log('userId', userId)
   if (!userId) {
      return <div>User not authenticated</div>;
   }
   const traits = api.traits.create.useMutation();
   const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({userId})
 
-  
   if(isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
 
@@ -36,6 +40,7 @@ export default function TraitsForm () {
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     await traits.mutateAsync({...data, dogProfileId: id});
+    router.push('/ProfileForm/prompts')
   };
 
   return (

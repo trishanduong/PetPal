@@ -13,7 +13,6 @@ export const profileRouter = createTRPCRouter({
       bio:z.string().max(255),
       sex: z.string(),
       profilePic: z.string(),
-      
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
@@ -70,7 +69,8 @@ export const profileRouter = createTRPCRouter({
       userId: z.string(),
     }))
     .query(async({ctx, input})=>{
-      //console.log('query', input.userId)
+      console.log('query', input.userId)
+      
       const profile = await ctx.db.dogProfile.findUnique({
         where: {
           userId: input.userId,

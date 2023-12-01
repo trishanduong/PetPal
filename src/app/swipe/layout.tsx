@@ -5,7 +5,7 @@ export default function DashboardLayout({
   }) {
     return (
       <section>
-        <div className="flex min-h-screen flex-col items-center bg-gradient-to-t from-amber-100 via-amber-150 to-amber-300">
+        <div className="flex min-h-screen flex-col items-center bg-amber-200">
          {children}
         </div>
       </section>

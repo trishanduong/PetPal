@@ -6,6 +6,8 @@ import { UploadButton } from "~/utils/uploadthing";
 import type { Prompt } from "@prisma/client";
 import FormProgressBar from "~/app/_components/FormProgressBar";
 
+import { useRouter } from 'next/navigation';
+
 type Data = {
   dogProfileId: string,
   image: string,
@@ -16,6 +18,7 @@ type FormInputs = Record<string, Data>;
 
 
 const Prompts = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -34,7 +37,9 @@ const Prompts = () => {
         promptId: promptId 
       }));
 
-    await allPosts.mutateAsync(transformedData)
+    console.log(transformedData)
+    await allPosts.mutateAsync(transformedData);
+    router.push('/ProfilePage')
   };
   
 
