@@ -3,6 +3,7 @@ import { profileRouter } from "./routers/profile";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { traitsRouter } from "./routers/traits";
 import { promptRouter } from "./routers/prompt";
+import { followRouter } from "./routers/follows";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   traits: traitsRouter,
   prompt: promptRouter,
+  follows: followRouter,
 });
 
 // export type definition of API

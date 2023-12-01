@@ -71,16 +71,15 @@ export default async function ProfilePage(props: ProfileWithUser){
     // Handle the case when userId is null
     return <div>User not authenticated</div>;
   }
+  //console.log(props, 'in profilepage')
   
-  const profile = await api.profile.getProfileById.query({userId: user.userId});
-  console.log("profile in profilepage", profile)
-  const {id} = profile;
+  const {id} = props;
 
   const posts: Post[] = await api.post.getPostsByUser.query({dogProfileId: id});
 
   return (
     <div>
-      <ProfileHeader {...profile}/>
+      <ProfileHeader {...props}/>
       {
         posts.map((post: Post) => 
         <PostBox key={post.id} post={post}/>

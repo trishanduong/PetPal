@@ -8,20 +8,23 @@ import Buttons from "../_components/Buttons";
 export default async function Swipe(){
   //current user
   const user =  auth();
-  if (!user.userId) {
-    return <div>User not authenticated</div>;
+  const currentUserId = user.userId;
+  if (!currentUserId) {
+    throw new Error('No user')
   }
   
   //Get the profile of this random user: 
-  const profile = await api.profile.getRandomProfile.query();
+  const profile = await api.profile.getRandomProfile.query({excludeUserId: currentUserId});
+  if(!profile) throw new Error('No profile');
+
   //const profile = await api.profile.getProfileById.query({userId: user.userId});
-  console.log("profile in swipe", profile)
-
-
+  //console.log("profile in swipe", profile)
+  
+  
   return (
     <div>
       <ProfilePage {...profile}/>
-      <Buttons {...profile}/>
+      <Buttons currentUserId={currentUserId} profileId={profile.id}/>
     </div>
   )
 }

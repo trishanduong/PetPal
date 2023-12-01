@@ -41,7 +41,7 @@ export default function ProfileForm() {
     setPercent(30);
     console.log(data)
     await profile.mutateAsync({...data});
-    router.push('/ProfileForm/TraitsForm')
+    router.push('/form/traits')
   }
 
   return (

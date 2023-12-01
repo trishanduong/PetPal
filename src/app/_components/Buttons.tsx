@@ -1,18 +1,36 @@
 'use client'
 
-import type { RouterOutputs } from "~/trpc/shared";
+import type { FC } from "react";
+import { api } from "~/trpc/react";
+import { useRouter } from 'next/navigation';
 
-type ProfileWithUser = RouterOutputs["profile"]["getProfileById"];
+//Props: profileId of the user we are rejecting/accepted
+type ButtonProps = {
+  profileId: bigint,
+  currentUserId: string,
+};
 
-export default function Buttons (props: ProfileWithUser) {
+const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
+  //get the current user:
+    const router = useRouter();
+    const { data: profile, isLoading, error } = api.profile.getProfileById.useQuery({ userId: currentUserId });
+    const update = api.follows.addFollowing.useMutation();
+
+    
+   if(isLoading) return <div>Loading...</div>;
+   if (error) return <div>An error occurred: {error.message}</div>;
+   const {id} = profile;
+
 
     //if they press heart button, send them to "yes"
-    const handlePlaydate = () => {
-      console.log('lets chat!')
+    const handlePlaydate = async () => {
+      //update 'following'
+      await update.mutateAsync({currentUserId: id, likedId: profileId});
     }
     //if they press x button, send them to "no",
     const handleReject = () => {
-      console.log('rejected user')
+      router.push('/swipe');
+      console.log('redirected')
     }
 
     return (
@@ -26,4 +44,6 @@ export default function Buttons (props: ProfileWithUser) {
       </div>
     );
    };
+
+   export default Buttons;
   

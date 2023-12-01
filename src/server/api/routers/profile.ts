@@ -3,7 +3,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
-
 export const profileRouter = createTRPCRouter({
   //Create a new profile (sign up)
   create: privateProcedure
@@ -62,14 +61,13 @@ export const profileRouter = createTRPCRouter({
 
       return profile;
     }),
-  
   //Get dog profile using userId
   getProfileById: publicProcedure
     .input(z.object({
       userId: z.string(),
     }))
     .query(async({ctx, input})=>{
-      console.log('query', input.userId)
+      //console.log('query', input.userId)
       
       const profile = await ctx.db.dogProfile.findUnique({
         where: {
@@ -88,15 +86,29 @@ export const profileRouter = createTRPCRouter({
       return profile;
     }),
     getRandomProfile: publicProcedure
-    .query(async({ctx})=>{
-      const totalUsers = await ctx.db.dogProfile.count();
-      console.log('totalUsers', totalUsers);
+    .input(z.object({
+      excludeUserId: z.string(),
+    }))
+    .query(async({ctx, input})=>{
+      const totalUsers = await ctx.db.dogProfile.count({
+        where: {
+          userId: {
+            not: input.excludeUserId,
+          }
+        }
+      });
+      //console.log('totalUsers', totalUsers);
       const randomIndex = Math.floor(Math.random() * totalUsers);
       const randomUser = await ctx.db.dogProfile.findMany({
         take: 1,
-        skip: randomIndex
+        skip: randomIndex,
+        where: {
+          userId: {
+            not: input.excludeUserId
+          }
+        }
       });
       console.log('user', randomUser);
-      return randomUser;
+      return randomUser[0];
     }),
 });

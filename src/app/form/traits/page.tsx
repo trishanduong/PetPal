@@ -39,7 +39,7 @@ export default function TraitsForm () {
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     await traits.mutateAsync({...data, dogProfileId: id});
-    router.push('/ProfileForm/prompts')
+    router.push('/form/prompts')
   };
 
   return (

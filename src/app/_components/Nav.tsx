@@ -17,7 +17,7 @@ export default function Nav(){
                 <Link href="/swipe">Profile</Link>
               </li>
               <li>
-                <Link href="/ProfileForm">Create Profile</Link>
+                <Link href="/form">Form</Link>
               </li>
               <li>
                 <UserButton/>

@@ -39,7 +39,7 @@ const Prompts = () => {
 
     console.log(transformedData)
     await allPosts.mutateAsync(transformedData);
-    router.push('/ProfilePage')
+    router.push('/profile')
   };
   
 

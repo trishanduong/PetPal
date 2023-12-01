@@ -8,25 +8,25 @@
  */
 import { TRPCError, initTRPC } from "@trpc/server";
 import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
-import type { GetServerSideProps } from "next";
 
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
-
-import { clerkClient, getAuth, buildClerkProps,} from "@clerk/nextjs/server";
+import {getAuth} from "@clerk/nextjs/server";
 
 //Alternative: 
 
 //When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
 //This functions checks if the user is authenticated and, if so, fetches the user's data, and is passed as props on the server-side rendered page.
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { userId } = getAuth(ctx.req);
-  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { userId } = getAuth(ctx.req);
+//   const user = userId ? await clerkClient.users.getUser(userId) : undefined;
  
-  return { props: { ...buildClerkProps(ctx.req, { user }) } };
-};
+//   return { props: { ...buildClerkProps(ctx.req, { user }) } };
+// };
+
+
 
 /**
  * 1. CONTEXT
@@ -129,15 +129,6 @@ export const publicProcedure = t.procedure;
 
 const enforceUserAuthentication = t.middleware(async({ctx, next})=>{
 
-  // if(!ctx.userId || ctx.userId === null) throw new TRPCError({
-  //   code:"UNAUTHORIZED",
-  // });
-
-  // return next({
-  //   ctx: {
-  //     userId: ctx.userId,
-  //   }
-  // })
   if(!ctx.clerk || ctx.clerk === null) throw new TRPCError({
     code:"UNAUTHORIZED",
   });
