@@ -16,12 +16,23 @@ const getId = async (userId: string) => {
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
+  profilePicture: f(["image"])
+    .middleware(() => {
+      const {userId} = auth();
+      console.log('userId in profile pic', userId)
+      if(!userId) throw new Error("Unauthorized");
+      return { userId};
+    })
+    .onUploadComplete(({metadata, file}) => {
+      return { uploadedBy: metadata.userId, url: file.url}
+    }),
   // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f({ image: { maxFileSize: "4MB" } })
     // Set permissions and file types for this FileRoute
     .middleware(async() => {
       // This code runs on your server before upload
       const {userId} = auth(); //getUserId
+      console.log('userId', userId)
       if(!userId) throw new Error("Unauthorized");
       const dogProfileId = await getId(userId)
 

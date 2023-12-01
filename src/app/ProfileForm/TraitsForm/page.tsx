@@ -25,7 +25,6 @@ export default function TraitsForm () {
    } = useForm<FormInputs>();
 
   const {userId} = useAuth();
-  console.log('userId', userId)
   if (!userId) {
      return <div>User not authenticated</div>;
   }

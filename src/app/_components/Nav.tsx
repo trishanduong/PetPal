@@ -14,7 +14,7 @@ export default function Nav(){
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mr-4 mt-2 justify-items-center md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
               <li>
-                <Link href="/ProfilePage">Profile</Link>
+                <Link href="/swipe">Profile</Link>
               </li>
               <li>
                 <Link href="/ProfileForm">Create Profile</Link>

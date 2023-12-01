@@ -33,7 +33,7 @@ const ProfileHeader = async (props: ProfileWithUser) => {
   if(!traitsId) return <div>Error</div>
   // console.log('hi this is props', props)
   const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
-  console.log('traits', traits)
+
   const tag = Object.entries(traits)
 
   return (
@@ -65,7 +65,7 @@ const ProfileHeader = async (props: ProfileWithUser) => {
 };
 
 
-export default async function ProfilePage(){
+export default async function ProfilePage(props: ProfileWithUser){
   const user =  auth();
   if (!user.userId) {
     // Handle the case when userId is null

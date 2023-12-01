@@ -18,7 +18,7 @@ const Hero = () => {
               </a> 
           </div>
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <img src="https://utfs.io/f/f5bebfed-eee4-42d8-b4f4-72db7eda56b7-lymynx.png" alt="mockup" />
+              <img src={'public/homepage.png'} alt="mockup" />
               <div className="bg-yellow-300 rounded-lg w-4/6"></div>
           </div>                
       </div>

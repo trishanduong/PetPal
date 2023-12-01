@@ -34,7 +34,7 @@ export default function ProfileForm() {
     handleSubmit,
     setValue,
   } = useForm<FormInputs>();
-
+  
   const profile = api.profile.create.useMutation();
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
@@ -52,7 +52,7 @@ export default function ProfileForm() {
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
             <label>Upload a charming profile picture:</label>
             <UploadButton
-              endpoint="imageUploader"
+              endpoint="profilePicture"
               onClientUploadComplete={(res) => {
                 // console.log("Files: ", res); console.log('url of file', res[0]?.url);
                 // alert("Upload Completed");

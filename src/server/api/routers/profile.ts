@@ -17,7 +17,7 @@ export const profileRouter = createTRPCRouter({
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
       const {userId} = ctx.clerk;
-      
+      console.log('router', userId)
       if(typeof userId !== "string") throw new TRPCError({
         code:"INTERNAL_SERVER_ERROR",
         message: "No user"
@@ -86,5 +86,17 @@ export const profileRouter = createTRPCRouter({
       }
 
       return profile;
+    }),
+    getRandomProfile: publicProcedure
+    .query(async({ctx})=>{
+      const totalUsers = await ctx.db.dogProfile.count();
+      console.log('totalUsers', totalUsers);
+      const randomIndex = Math.floor(Math.random() * totalUsers);
+      const randomUser = await ctx.db.dogProfile.findMany({
+        take: 1,
+        skip: randomIndex
+      });
+      console.log('user', randomUser);
+      return randomUser;
     }),
 });
