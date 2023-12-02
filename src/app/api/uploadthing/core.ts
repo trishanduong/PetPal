@@ -1,7 +1,7 @@
 
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { api } from '~/trpc/server';
-import { getAuth } from "@clerk/nextjs/server";
+// import { getAuth } from "@clerk/nextjs/server";
 
 const f = createUploadthing();
 

@@ -7,13 +7,16 @@
  * need to use are documented accordingly near the end.
  */
 import { TRPCError, initTRPC } from "@trpc/server";
-import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
+
 
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
-import {getAuth} from "@clerk/nextjs/server";
+
+import { auth } from "@clerk/nextjs";
+// import {getAuth} from "@clerk/nextjs/server";
+// import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
 
 //Alternative: 
 
@@ -47,14 +50,21 @@ import {getAuth} from "@clerk/nextjs/server";
 //  *
 //  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
 //  */
-interface CreateContextOptions {
-  headers: Headers;
-}
+// interface CreateContextOptions {
+//   headers: Headers;
+// }
 
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  
+export const createInnerTRPCContext = (opts: {headers: Headers}) => {
+  const user = auth();
+  const clerk = user.userId;
+
+  // const clerk = getAuth(opts.req);
+  // console.log('clerk', clerk);
   return {
-    headers: opts.headers,
+    ...opts,
+    // headers: opts.headers,
+    clerk,
+    db,
   };
 };
 
@@ -66,15 +76,12 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 
 
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: {headers: Headers}) => {
   // Fetch stuff that depends on the request
-  const clerk = getAuth(opts.req);
-  console.log('clerk', clerk);
-  return {
-    db,
-    clerk,
-    // userId,
-  }
+  
+  return createInnerTRPCContext({
+    ...opts,
+  })
 };
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;

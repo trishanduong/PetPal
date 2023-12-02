@@ -15,7 +15,7 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic} = input;
-      const {userId} = ctx.clerk;
+      const userId = ctx.clerk;
       console.log('router', userId)
       if(typeof userId !== "string") throw new TRPCError({
         code:"INTERNAL_SERVER_ERROR",
@@ -59,6 +59,31 @@ export const profileRouter = createTRPCRouter({
           profilePic},
       })
 
+      return profile;
+    }),
+  updateProfile: privateProcedure
+    .input(z.object({
+      name: z.string(), 
+      age: z.number(), 
+      bio: z.string().max(255), 
+      sex: z.string(),  
+      userId: z.string(),
+    }))
+    .mutation(async({ctx, input})=>{
+      if(typeof input.age === 'number') Number(input.age);
+      console.log('number', typeof input.age);
+      const profile = await ctx.db.dogProfile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          name: input.name,
+          age: input.age,
+          bio: input.bio,
+          sex: input.sex,
+        },
+      })
+      //location pls
       return profile;
     }),
   //Get dog profile using userId

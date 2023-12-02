@@ -1,17 +1,6 @@
 import Image from "next/image";
 
-// const Hero = () => {
-//   return (
-//     <section className="bg-white dark:bg-yellow-500 h-screen w-screen">
-//       <div className="p-10">
-        
-//       </div>  
-//     </section>
-
-//   )
-// }
-
-export function HeroSection() {
+function HeroSection() {
     return (
         <div className="flex bg-yellow-500 h-[85vh]">
             <div className="w-2/5 flex items-center justify-center">

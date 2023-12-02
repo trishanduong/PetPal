@@ -19,8 +19,7 @@ const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
     
    if(isLoading) return <div>Loading...</div>;
    if (error) return <div>An error occurred: {error.message}</div>;
-   const {id} = profile;
-
+   const id = profile?.id;
 
     //if they press heart button, send them to "yes"
     const handlePlaydate = async () => {
