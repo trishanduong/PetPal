@@ -50,6 +50,39 @@ export const traitsRouter = createTRPCRouter({
       return traits;
     }),
 
+  updateTraits: privateProcedure
+    .input(z.object({
+      species: z.string(),
+      size: z.string(),
+      weight: z.number(),
+      children: z.string(),
+      neutered: z.string(),
+      energyLevel: z.number(),
+      traitsId: z.string(),
+    }))
+    .mutation(async({ctx, input})=>{
+      //energy and weight type 
+      if(typeof input.weight !== 'number') Number(input.weight);
+      if(typeof input.energyLevel !== 'number') Number(input.energyLevel);
+      
+      const traits = await ctx.db.traits.update({
+        where: {
+          id: input.traitsId,
+        },
+        data: {
+          species: input.species,
+          size: input.size,
+          weight: input.weight,
+          children: input.children,
+          neutered: input.neutered,
+          energyLevel: input.energyLevel,
+        }
+      });
+
+      return traits;
+    }),
+
+  
   //get traits
   getTraitsById: publicProcedure
     .input(z.object({

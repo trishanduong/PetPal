@@ -22,6 +22,7 @@ export type FormInputs = {
   age: number,
   bio: string,
   sex: SexEnum,
+  location: string,
   profilePic: string,
 };
 
@@ -72,6 +73,11 @@ export default function ProfileForm() {
                 <label>Age:</label>
                 <input type="number" {...register("age", { required: true, valueAsNumber: true })} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6' />
               </div>
+              <div className='flex flex-col'>
+                <label>City, State:</label>
+                <input placeholder="Ex. Los Angeles, CA" type="text" {...register("location", { required: true})} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6' />
+              </div>
+
               <div className='flex flex-col'>
               <label>Sex: </label>
               <select {...register("sex")} className='block w-full rounded-md border-0 px-1 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'>

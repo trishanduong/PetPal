@@ -12,9 +12,10 @@ export const profileRouter = createTRPCRouter({
       bio:z.string().max(255),
       sex: z.string(),
       profilePic: z.string(),
+      location: z.string(),
     }))
     .mutation(async ({ctx, input})=>{
-      const {name, sex, age, bio, profilePic} = input;
+      const {name, sex, age, bio, profilePic, location} = input;
       const userId = ctx.clerk;
       console.log('router', userId)
       if(typeof userId !== "string") throw new TRPCError({
@@ -29,6 +30,7 @@ export const profileRouter = createTRPCRouter({
          bio,
          sex,
          profilePic,
+         city: location,
          userId,
         }
       });
@@ -61,17 +63,19 @@ export const profileRouter = createTRPCRouter({
 
       return profile;
     }),
+    
   updateProfile: privateProcedure
     .input(z.object({
       name: z.string(), 
       age: z.number(), 
       bio: z.string().max(255), 
       sex: z.string(),  
+      location: z.string(),
       userId: z.string(),
     }))
     .mutation(async({ctx, input})=>{
-      if(typeof input.age === 'number') Number(input.age);
-      console.log('number', typeof input.age);
+      if(typeof input.age === 'string') Number(input.age);
+      
       const profile = await ctx.db.dogProfile.update({
         where: {
           userId: input.userId,
@@ -81,11 +85,13 @@ export const profileRouter = createTRPCRouter({
           age: input.age,
           bio: input.bio,
           sex: input.sex,
+          city: input.location,
         },
       })
-      //location pls
+   
       return profile;
     }),
+
   //Get dog profile using userId
   getProfileById: publicProcedure
     .input(z.object({

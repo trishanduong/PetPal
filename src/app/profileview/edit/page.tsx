@@ -2,14 +2,13 @@
 'use client'
 
 import Link from 'next/link';
-import Image from 'next/image';
 import {useForm, type SubmitHandler, Controller} from 'react-hook-form';
-import { UploadButton } from "~/utils/uploadthing";
 
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
 import { useAuth } from '@clerk/nextjs';
 import ProfileCard from '~/app/_components/ProfileCard';
+import EditContents from '~/app/_components/EditContents';
 
 
 export type FormInputs = {
@@ -43,28 +42,15 @@ export default function EditProfile(){
     if(!isSignedIn || !userId) return null;
     
     const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
-        const { name, age, bio, sex} = data;
+        const { name, age, bio, sex, location} = data;
         console.log('data in edit', data);
-        await updateProfile.mutateAsync({ name, age, bio, sex, userId});
-        // await traits.mutateAsync({});
-        // router.push('/profileview')
+        await updateProfile.mutateAsync({ name, age, bio, sex, location, userId});
+        router.push('/profileview')
     }
 
     return (
         <div>
-          <div className=" p-4 rounded-lg">
-            <h1 className="text-xl mb-2 text-amber-900 font-extrabold self-start">EDIT PROFILE</h1>
-                <div>
-                  <ul className='flex'>
-                    <li>
-                      <Link href="/profileview/edit" className='p-2 bg-yellow-400 rounded-md font-bold'>Profile</Link>
-                    </li>
-                    <li>
-                      <Link href="/profileview/edit" className='p-2 bg-yellow-400 rounded-md font-bold'>About me</Link>
-                    </li>
-                  </ul>
-                </div>
-            </div>
+          <EditContents/>
         <div className='flex flex-col md:flex-row justify-around mt-2 pt-15 px-4 '>
             <div className="w-full flex flex-col md:w-4/6 bg-yellow-500 p-3 rounded-lg">
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col flex-grow gap-2'>
@@ -84,7 +70,7 @@ export default function EditProfile(){
                     <Controller
                       control={control}
                       name="age"
-                      defaultValue={profile?.age} // Set default value
+                      defaultValue={profile?.age} 
                       render={({ field }) => (
                         <input type="number" {...field} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900' />
                       )}
@@ -93,17 +79,17 @@ export default function EditProfile(){
                 
 
                 <div className="flex justify-between">
-                  {/* <div className='flex flex-col'>
+                  <div className='flex flex-col'>
                     <label>City, State:</label>
                     <Controller
                       control={control}
                       name="location"
-                      defaultValue='' // Set default value
+                      defaultValue={profile.city ?? ' '} 
                       render={({ field }) => (
-                        <input type="text" {...field} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900' />
+                        <input placeholder="Ex. Los Angeles, CA" type="text" {...field} className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900' />
                       )}
                       />
-                  </div> */}
+                  </div>
                 </div>
                   <div className='flex pl-2 flex-col'>
                   <label>Sex: </label>
