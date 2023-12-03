@@ -18,14 +18,14 @@ export default function Nav (){
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mr-3 mt-2 justify-items-center md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
               <li>
-              {userId && <Link href="/swipe" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-amber-600 hover:text-white rounded-full">SWIPE</Link>}
+              {userId && <Link href="/swipe" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">SWIPE</Link>}
               </li>
               <li>
-                <Link href='/aboutus' className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-amber-600 hover:text-white rounded-full">ABOUT US</Link>
+                <Link href='/aboutus' className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">ABOUT US</Link>
               </li>
               <li>
                 {userId && <Dropdown/>}
-                {!userId && (<div className="flex items-center p-3 py-2 font-extrabold text-amber-900 bg-white hover:bg-gray-100 hover:dark:bg-amber-600 rounded-full">
+                {!userId && (<div className="flex items-center p-3 py-2 font-extrabold text-amber-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 rounded-full">
                   <SignInButton>LOGIN</SignInButton>
                 </div>)}
               </li>

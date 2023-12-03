@@ -70,11 +70,11 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
     };
 
   return (
-    <div className="mt-5 flex justify-center">
+    <div className="mt-5 flex justify-start">
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-        <div className="flex justify-around flex-wrap">
+        <div className="flex flex-wrap">
         {promptsQuery.map((prompt: Prompt) => (
-            <div key={prompt.id} className="flex flex-col m-5">
+            <div key={prompt.id} className="flex flex-col m-5 p-3 rounded-md bg-yellow-500">
               <label htmlFor={`prompt_${prompt.id}`}>{prompt.prompt}</label>
               <Controller 
                 control={control}
@@ -106,9 +106,9 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
         ))}
         </div>
         <div className="flex justify-center">
-            <input type="submit" 
-               value="SAVE" 
-               className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
+          <input type="submit" 
+            value="SAVE" 
+            className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
         </div>
       </form>
     </div>

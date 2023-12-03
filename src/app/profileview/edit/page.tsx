@@ -17,7 +17,7 @@ export type FormInputs = {
   age: number,
   bio: string,
   sex: string,
-  location: string
+  location: string,
 };
 
 
@@ -123,7 +123,15 @@ export default function EditProfile(){
               </form>
         </div>
         <div className="w-full md:w-auto md:flex-none md:ml-4 ">
-            <ProfileCard/>
+            {!isLoading && (
+              <ProfileCard 
+                  profilePic={profile.profilePic}
+                  name={profile.name}
+                  age={profile.age}
+                  bio={profile.bio}
+                  city={profile.city}
+                  />
+            )}
         </div>
         </div>
       </div>

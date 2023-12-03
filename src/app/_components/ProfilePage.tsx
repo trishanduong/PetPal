@@ -18,7 +18,6 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
   
     return (
      <div>
-       {/* <div className="bg-amber-500 rounded-full text-center">American Bully</div> */}
        <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2 drop-shadow-sm">
         #{typeof value === 'number'? value + ' pounds' : value}
        </div>
@@ -31,7 +30,6 @@ const ProfileHeader = async (props: ProfileWithUser) => {
   const {profilePic, name, age, bio, traitsId, city} = props;
   
   if(!traitsId) return <div>Error</div>
-  // console.log('hi this is props', props)
   const traits = await api.traits.getTraitsById.query({traitsId: traitsId})
 
   const tag = Object.entries(traits)

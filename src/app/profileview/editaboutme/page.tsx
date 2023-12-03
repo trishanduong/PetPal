@@ -32,7 +32,7 @@ export default function EditProfile(){
                 <EditTraitsForm traitsId={traitsId}/>
             </div>
             <div className="w-full md:w-auto md:flex-none md:ml-4 ">
-                <ProfileCard/>
+                {!isLoading && <ProfileCard {...profile}/>}
             </div>
         </div>
       </div>
