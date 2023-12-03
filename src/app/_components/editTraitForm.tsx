@@ -124,7 +124,7 @@ const EditTraitsForm: FC<TraitsFormProps> = ({traitsId}) => {
                   )}
                 />
                 <div className="flex justify-center">
-                <input type="submit" value="Next" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
+                <input type="submit" value="SAVE" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
                 </div>
             </form>
         </div>

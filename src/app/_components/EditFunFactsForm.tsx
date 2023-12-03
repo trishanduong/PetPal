@@ -61,12 +61,12 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
 
     const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
         const transformedData = Object.entries(data).map(([promptId, postData]) => ({
-            ...postData,
-            promptId: promptId 
+          ...postData,
+          promptId: promptId 
         }));
         const updated = await update.mutateAsync(transformedData);
         console.log('updated data', updated);
-        // router.push('/profile')
+        router.push('/profile')
     };
 
   return (
@@ -107,7 +107,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
         </div>
         <div className="flex justify-center">
             <input type="submit" 
-               value="See your profile!" 
+               value="SAVE" 
                className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-2/4"/>
         </div>
       </form>

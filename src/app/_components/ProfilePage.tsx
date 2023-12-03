@@ -28,7 +28,7 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
    
 
 const ProfileHeader = async (props: ProfileWithUser) => {
-  const {profilePic, name, age, bio, traitsId} = props;
+  const {profilePic, name, age, bio, traitsId, city} = props;
   
   if(!traitsId) return <div>Error</div>
   // console.log('hi this is props', props)
@@ -38,17 +38,17 @@ const ProfileHeader = async (props: ProfileWithUser) => {
 
   return (
     <div className="flex flex-col items-center mt-5">
-      <div className="relative mb-3 w-96 h-96 rounded-full shadow-lg overflow-hidden drop-shadow-md"> {/* Adjust the w-24 h-24 to the size you want */}
+      <div className="relative mb-3 w-96 h-96 rounded-full shadow-lg overflow-hidden drop-shadow-md"> 
           <Image
             src={`${profilePic}`}
             alt={`${name}'s profile picture`}
             layout="fill"
-            objectFit="cover" // This will cover the area of the div, and the image will be cropped if not a square
-            className="rounded-full border-4 border-slate-50" // This will ensure the image itself is also rounded if the parent div is rounded
+            objectFit="cover" 
+            className="rounded-full border-4 border-slate-50" 
           />
         </div>
-        <div className="pt-3 text-amber-900 text-8xl font-bold">{name}</div>
-        <div className="text-amber-800"> {age} years old | 5 miles away</div>
+        <div className="pt-3 text-amber-900 text-8xl font-bold">{name.toLowerCase()}</div>
+        <div className="text-amber-800"> {age} years old <span className="text-yellow-600">✦</span> {city}</div>
         <div className="w-full">
           <div className="font-semibold">Bio: </div>
           <div>{`${bio}`}</div>

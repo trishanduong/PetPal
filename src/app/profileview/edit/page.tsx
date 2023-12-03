@@ -1,7 +1,6 @@
 
 'use client'
 
-import Link from 'next/link';
 import {useForm, type SubmitHandler, Controller} from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
@@ -119,7 +118,7 @@ export default function EditProfile(){
                 />
 
                 <div className="flex justify-center">
-                  <input type="submit" value="NEXT" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"/>
+                  <input type="submit" value="SAVE" className="bg-stone-500 text-white font-bold uppercase text-sm px-5 py-3 rounded-full shadow hover:bg-stone-600 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"/>
                 </div>
               </form>
         </div>

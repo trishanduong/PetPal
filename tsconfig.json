@@ -38,6 +38,6 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
-  ],
+, "src/app/aboutus"  ],
   "exclude": ["node_modules"]
 }
