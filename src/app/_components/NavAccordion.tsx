@@ -26,7 +26,6 @@ const Dropdown = () => {
         <svg
           className="w-4 h-4 ml-2"
           aria-hidden="true"
-          fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +38,6 @@ const Dropdown = () => {
           />
         </svg>
       </button>
-      {/* Dropdown menu */}
       {isDropdownOpen && (
         <div
           className="absolute right-0 z-20 w-44 py-2 mt-2 bg-white rounded-lg shadow-xl dark:bg-amber-50"

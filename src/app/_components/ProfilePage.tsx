@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { auth } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 type ProfileCardProps = {
   name: string,

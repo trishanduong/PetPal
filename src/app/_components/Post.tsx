@@ -1,6 +1,6 @@
 import { api } from "~/trpc/server";
 import type { Post, Prompt } from "@prisma/client";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 type PostBoxProps = {
   key: bigint,
@@ -20,9 +20,11 @@ const PostBox = async(props: PostBoxProps) => {
         <div>
           <span className="text-3xl py-2 font-bold text-orange-950">✦ {prompt}</span>
           <div className="text-center text-2xl text-orange-800 font-medium py-2 ">{answer}</div>
-          <div style={{ position: 'relative', height: '400px' }}>
-            <Image className="rounded-md" src={`${image}`} alt={`${answer}`} fill={true} style={{
-              objectFit: 'cover'
+          <div style={{ position: 'relative', height: 'fit-content'}}>
+            <Image className="rounded-md" src={`${image}`} alt={`${answer}`} layout="responsive" width={300} height={300} style={{
+              objectFit: 'cover',
+              width: '100%', 
+              height: '100%',
             }} >
             </Image>
           </div>

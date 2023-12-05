@@ -7,7 +7,7 @@ import {useForm, type SubmitHandler, Controller} from 'react-hook-form';
 
 import { UploadButton } from "~/utils/uploadthing";
 import type { Prompt, Post} from "@prisma/client";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 type PromptQueryProps = {
     promptsQuery: {
