@@ -2,12 +2,10 @@ import type { FC } from 'react';
 import Image from 'next/image';
 
 type ProfileCardProps = {
-  userId: string,
   name: string,
   age: number,
   bio: string,
   profilePic: string | null,
-  sex: string,
   city: string | null,
 }
 
