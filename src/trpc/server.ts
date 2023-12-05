@@ -7,13 +7,14 @@ import { cookies } from "next/headers";
 
 import { type AppRouter } from "~/server/api/root";
 import { getUrl, transformer } from "./shared";
+import superjson from "superjson";
 
 export const api = createTRPCProxyClient<AppRouter>({
-  transformer,
+  transformer: superjson,
   links: [
     loggerLink({
       enabled: (op) =>
-        process.env.NODE_ENV === "development" ||
+        process.env.NODE_ENV !== "production" || 
         (op.direction === "down" && op.result instanceof Error),
     }),
     unstable_httpBatchStreamLink({

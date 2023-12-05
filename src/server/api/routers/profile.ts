@@ -98,7 +98,7 @@ export const profileRouter = createTRPCRouter({
       userId: z.string(),
     }))
     .query(async({ctx, input})=>{
-      //console.log('query', input.userId)
+      console.log('query', input.userId)
       
       const profile = await ctx.db.dogProfile.findUnique({
         where: {
@@ -116,6 +116,8 @@ export const profileRouter = createTRPCRouter({
 
       return profile;
     }),
+
+    //generate random profile
     getRandomProfile: publicProcedure
     .input(z.object({
       excludeUserId: z.string(),

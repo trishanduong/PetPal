@@ -1,20 +1,26 @@
 
-import { auth } from "@clerk/nextjs";
+import { auth} from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 
 import ProfilePage from "../_components/ProfilePage";
 import Link from "next/link";
 
 
-export default async function ProfileView(){
+export default async function Page(){
   //current user
-  const user =  auth();
-  const currentUserId = user.userId;
-  if (!currentUserId) {
-    throw new Error('No user')
+  const { userId } = auth();
+
+  //const currentUserId = user?.userId;
+
+  // if (!currentUserId) {
+  //   throw new Error('No user')
+  // }
+
+   if (!userId) {
+    throw new Error('No user, this is auth()')
   }
   
-  const profile = await api.profile.getProfileById.query({userId: user.userId});
+  const profile = await api.profile.getProfileById.query({userId});
   console.log("profile in swipe", profile)
   
   
