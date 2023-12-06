@@ -18,18 +18,6 @@ import { auth } from "@clerk/nextjs";
 // import {getAuth} from "@clerk/nextjs/server";
 // import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
 
-//Alternative: 
-
-//When a request is made to a page that uses this getServerSideProps function, it runs on the server before the page is rendered.
-//This functions checks if the user is authenticated and, if so, fetches the user's data, and is passed as props on the server-side rendered page.
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { userId } = getAuth(ctx.req);
-//   const user = userId ? await clerkClient.users.getUser(userId) : undefined;
- 
-//   return { props: { ...buildClerkProps(ctx.req, { user }) } };
-// };
-
-
 
 /**
  * 1. CONTEXT

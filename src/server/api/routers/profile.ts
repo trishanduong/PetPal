@@ -93,7 +93,7 @@ export const profileRouter = createTRPCRouter({
     }),
 
   //Get dog profile using userId
-  getProfileById: publicProcedure
+  getProfileById: privateProcedure
     .input(z.object({
       userId: z.string(),
     }))
