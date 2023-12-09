@@ -4,8 +4,6 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { ClerkProvider } from '@clerk/nextjs';
-
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
@@ -29,7 +27,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
       <html lang="en">
         <body className={`font-sans ${inter.variable}`}>
           <TRPCReactProvider cookies={cookies().toString()}>
@@ -48,6 +45,5 @@ export default function RootLayout({
           </TRPCReactProvider>
         </body>
       </html>
-    </ClerkProvider>
   );
 }

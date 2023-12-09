@@ -12,12 +12,8 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-
-import { auth } from "@clerk/nextjs";
-// import {getAuth} from "@clerk/nextjs/server";
-// import type {CreateNextContextOptions} from '@trpc/server/adapters/next';
-
 
 /**
  * 1. CONTEXT
@@ -28,31 +24,13 @@ import { auth } from "@clerk/nextjs";
  */
 
 
-// /**
-//  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
-//  * it from here.
-//  *
-//  * Examples of things you may need it for:
-//  * - testing, so we don't have to mock Next.js' req/res
-//  * - tRPC's `createSSGHelpers`, where we don't have req/res
-//  *
-//  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
-//  */
-// interface CreateContextOptions {
-//   headers: Headers;
-// }
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const session = await getServerAuthSession();
 
-export const createInnerTRPCContext = (opts: {headers: Headers}) => {
-  const user = auth();
-  const clerk = user.userId;
-
-  // const clerk = getAuth(opts.req);
-  // console.log('clerk', clerk);
   return {
-    ...opts,
-    // headers: opts.headers,
-    clerk,
     db,
+    session,
+    ...opts,
   };
 };
 
@@ -64,13 +42,6 @@ export const createInnerTRPCContext = (opts: {headers: Headers}) => {
  */
 
 
-export const createTRPCContext = (opts: {headers: Headers}) => {
-  // Fetch stuff that depends on the request
-  
-  return createInnerTRPCContext({
-    ...opts,
-  })
-};
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
@@ -110,7 +81,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  */
 export const createTRPCRouter = t.router;
 
-
 /**
  * Public (unauthenticated) procedure
  *
@@ -120,19 +90,25 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-//If the userId is not authenticated, throw an unauthorized error, return next;
-
-const enforceUserAuthentication = t.middleware(async({ctx, next})=>{
-
-  if(!ctx.clerk || ctx.clerk === null) throw new TRPCError({
-    code:"UNAUTHORIZED",
-  });
-
+/** Reusable middleware that enforces users are logged in before running the procedure. */
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
   return next({
     ctx: {
-      userId: ctx.clerk,
-    }
-  })
-})
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
 
-export const privateProcedure = t.procedure.use(enforceUserAuthentication)
+/**
+ * Protected (authenticated) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
+ * the session is valid and guarantees `ctx.session.user` is not null.
+ *
+ * @see https://trpc.io/docs/procedures
+ */
+export const privateProcedure = t.procedure.use(enforceUserIsAuthed);

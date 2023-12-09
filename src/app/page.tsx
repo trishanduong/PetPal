@@ -3,6 +3,7 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 
 function Hola(){
+  
 
   return (
     <div className="relative flex w-full bg-teal-500">
@@ -85,7 +86,7 @@ function HeroSection() {
     );
 }
 
-export default function Home() {
+export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-amber-200 w-screen">

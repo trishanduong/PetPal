@@ -38,7 +38,6 @@ export const profileRouter = createTRPCRouter({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return profile;
     }),
-
   //Update or change the profile pic
   updateProfilePic: privateProcedure
     .input(z.object({
