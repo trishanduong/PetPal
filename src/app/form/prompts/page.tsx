@@ -55,18 +55,18 @@ const Prompts = () => {
                 id={`prompt_${prompt.id}`}
                 className='block w-full rounded-md border-0 px-2.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
                 />
-              <UploadButton
-                endpoint="imageUploader"
-                onClientUploadComplete={(res) => {
-                  setValue(`${prompt.id}.image`, res[0]?.url);
-                //   setValue(`${prompt.id}.promptId`, prompt.id);
-                  setValue(`${prompt.id}.dogProfileId`, res[0]?.serverData.dogProfileId);
-              }}
-              onUploadError={(error: Error) => {
-                alert(`ERROR! ${error.message}`);
-              }}
-              className="py-4"
-            />
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => {
+                    // Do something with the response
+                    console.log("Files: ", res);
+                    alert("Upload Completed");
+                  }}
+                  onUploadError={(error: Error) => {
+                    // Do something with the error.
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
             </div>
         ))}
 

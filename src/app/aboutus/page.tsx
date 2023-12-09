@@ -1,4 +1,4 @@
-import { SignInButton } from "@clerk/nextjs"
+
 import Image from "next/legacy/image"
 
 export default function Page(){
@@ -76,11 +76,9 @@ export default function Page(){
           backgroundRepeat: 'repeat' 
         }}>
           <div className="flex justify-center">
-            <SignInButton>
               <div className="items-center bg-amber-800 text-amber-300 hover:bg-teal-900 hover:text-teal-550 font-extrabold text-4xl my-10 p-3 border border-amber-400 rounded-md shadow-md w-50%">
                 ☞ Join our community
               </div>
-            </SignInButton>
           </div>
         </div>
     </div>

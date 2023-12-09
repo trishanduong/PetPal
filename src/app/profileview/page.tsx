@@ -4,17 +4,11 @@ import { api } from "~/trpc/server";
 
 import ProfilePage from "../_components/ProfilePage";
 import Link from "next/link";
-
+import { getServerAuthSession } from "~/server/auth";
+import getUserId from "~/server/helpers/getUserId";
 
 export default async function Page(){
-  //current user
-  const { userId } = auth();
-
-  //const currentUserId = user?.userId;
-
-  // if (!currentUserId) {
-  //   throw new Error('No user')
-  // }
+  const userId = await getUserId();
 
    if (!userId) {
     throw new Error('No user, this is auth()')

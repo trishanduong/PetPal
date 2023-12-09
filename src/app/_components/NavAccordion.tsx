@@ -1,15 +1,11 @@
 
 'use client'
 
-import { useUser } from '@clerk/nextjs';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { SignOutButton } from "@clerk/nextjs";
 
 const Dropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const {user} = useUser();
-  const username = user?.username;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -22,7 +18,7 @@ const Dropdown = () => {
         className="flex items-center pl-5 pr-3 py-2 text-gray-900 bg-white rounded-full hover:bg-gray-100 dark:text-white dark:bg-amber-700 hover:dark:bg-amber-600"
         id="dropdownNavbarLink"
         aria-expanded={isDropdownOpen}>
-        {username ? username : '★'}
+        {'★'}
         <svg
           className="w-4 h-4 ml-2"
           aria-hidden="true"
@@ -56,10 +52,10 @@ const Dropdown = () => {
             Settings
           </Link>
           <a
-            href="#"
+            href="/api/auth/signout"
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
-            <SignOutButton>Sign Out</SignOutButton>
+            Sign out
           </a>
         </div>
       )}

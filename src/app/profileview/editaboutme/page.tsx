@@ -2,27 +2,22 @@
 'use client'
 
 import { api } from '~/trpc/react';
-import { useAuth } from '@clerk/nextjs';
 import ProfileCard from '~/app/_components/ProfileCard';
 import EditTraitsForm from '~/app/_components/editTraitForm';
 import EditContents from '~/app/_components/EditContents';
 
 export default function EditProfile(){
-  const {userId, isSignedIn} = useAuth();
-
-  if (!userId) {
-      return <div>User not authenticated</div>;
-   }
-   
-  const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({userId});
+  const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({type: 'personal'});
 
   if(isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
-    //submit form data with the input userId, find the user on the server end
-  if(!isSignedIn || !userId) return null;
-  
+  const userId = profile?.userId;
+  if (!userId) {
+    return <div>User not authenticated</div>;
+ }
+
   const {traitsId} = profile;
-  if(!traitsId) return <div>Query error: No traits ID</div>
+  if(!traitsId) throw new Error("Query error: No traits ID");
 
     return (
         <div>

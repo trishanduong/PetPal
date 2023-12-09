@@ -55,7 +55,7 @@ export default function ProfileForm() {
             <UploadButton
               endpoint="profilePicture"
               onClientUploadComplete={(res) => {
-                // console.log("Files: ", res); console.log('url of file', res[0]?.url);
+                //console.log("Files: ", res); console.log('url of file', res[0]?.url);
                 // alert("Upload Completed");
                 if(res[0]?.url !== undefined) setValue('profilePic', res[0]?.url);
               }}

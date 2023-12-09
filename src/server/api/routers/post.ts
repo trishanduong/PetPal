@@ -1,7 +1,9 @@
 import type { Post } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
+import getUserId from "~/server/helpers/getUserId";
 
 const data = z.object({
   postId: z.string().optional(),
@@ -15,11 +17,21 @@ export const postRouter = createTRPCRouter({
   createPosts: privateProcedure
     .input(z.array(data))
     .mutation((async ({ctx, input})=>{
-      console.log('input', input)
+      const userId = await getUserId();
+      const dogProfile = await ctx.db.dogProfile.findUnique({
+        where: {
+          userId,
+        }
+      })
+      const dogProfileId = dogProfile?.id;
+      if(!dogProfileId) throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR"
+      });
+
       await ctx.db.post.createMany({
         data: input.map(postData => ({
           promptId: BigInt(postData.promptId),
-          dogProfileId: BigInt(postData.dogProfileId),
+          dogProfileId: BigInt(dogProfileId),
           image: postData.image,
           answer: postData.answer,
         })),
@@ -64,7 +76,7 @@ export const postRouter = createTRPCRouter({
   //Get posts
   getPostsForEdit: privateProcedure
     .query(async({ ctx }) => {
-      const userId = ctx.clerk;
+      const userId = await getUserId();
       if (userId === null) {
         // Handle the null case, maybe return an error or empty array
         return undefined;

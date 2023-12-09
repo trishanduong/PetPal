@@ -27,19 +27,14 @@ export default function EditProfile(){
           handleSubmit,
           control,
       } = useForm<FormInputs>();
-    const updateProfile = api.profile.updateProfile.useMutation();
-    const {userId, isSignedIn} = useAuth();
-    if (!userId) {
-      return <div>User not authenticated</div>;
-   }
+  const updateProfile = api.profile.updateProfile.useMutation();
    
-  const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({userId});
-
+  const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({type: 'personal'});
   if(isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
-    //submit form data with the input userId, find the user on the server end
-    if(!isSignedIn || !userId) return null;
-    
+  const userId = profile?.userId;
+  if(!userId) throw new Error("Unauthorized");
+  
     const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
         const { name, age, bio, sex, location} = data;
         console.log('data in edit', data);

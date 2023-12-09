@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
+import getUserId from "~/server/helpers/getUserId";
 
 export const profileRouter = createTRPCRouter({
   //Create a new profile (sign up)
@@ -16,10 +17,11 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async ({ctx, input})=>{
       const {name, sex, age, bio, profilePic, location} = input;
-      const userId = ctx.clerk;
-      console.log('router', userId)
+      
+      const userId = await getUserId();
+      
       if(typeof userId !== "string") throw new TRPCError({
-        code:"INTERNAL_SERVER_ERROR",
+        code:"UNAUTHORIZED",
         message: "No user"
       });
 
@@ -35,7 +37,6 @@ export const profileRouter = createTRPCRouter({
         }
       });
       
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return profile;
     }),
   //Update or change the profile pic
@@ -45,16 +46,17 @@ export const profileRouter = createTRPCRouter({
     }))
     .mutation(async({ctx, input})=>{
       const {profilePic} = input;
-      const {userId} = ctx;
+      const userId = await getUserId();
       
       if(typeof userId !== "string") throw new TRPCError({
-        code:"INTERNAL_SERVER_ERROR",
+        code:"UNAUTHORIZED",
         message: "No user"
       });
 
+
       const profile = await ctx.db.dogProfile.update({
         where: {
-          userId: userId,
+          userId,
         },
         data: {
           profilePic},
@@ -94,26 +96,28 @@ export const profileRouter = createTRPCRouter({
   //Get dog profile using userId
   getProfileById: privateProcedure
     .input(z.object({
-      userId: z.string(),
+      type: z.string().optional(),
+      userId: z.string().optional(),
     }))
     .query(async({ctx, input})=>{
-      console.log('query', input.userId)
-      
-      const profile = await ctx.db.dogProfile.findUnique({
-        where: {
-          userId: input.userId,
-        }
-      })
+      console.log('query', input.userId);
 
-      //console.log('profile in profile router', profile)
-      if (!profile) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Profile not found',
-        });
+      if(input.type="personal") {
+        const userId = await getUserId();
+        const profile = await ctx.db.dogProfile.findUnique({
+          where: {
+            userId,
+          }
+        })
+        return profile;
+      } else {
+          const profile = await ctx.db.dogProfile.findUnique({
+            where: {
+              userId: input.userId,
+            }
+          })
+          return profile;
       }
-
-      return profile;
     }),
 
     //generate random profile

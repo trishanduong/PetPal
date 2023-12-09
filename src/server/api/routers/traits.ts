@@ -6,7 +6,7 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
-
+import getUserId from "~/server/helpers/getUserId";
 
 import type { Traits } from '@prisma/client';
 
@@ -23,9 +23,21 @@ export const traitsRouter = createTRPCRouter({
       children: z.string(),
       neutered: z.string(),
       energyLevel: z.number(),
-      dogProfileId: z.bigint(),
     }))
     .mutation(async({ctx, input})=>{
+      const userId = await getUserId();
+      const dogProfile = await ctx.db.dogProfile.findUnique({
+        where: {
+          userId,
+        }
+      });
+      console.log('dogProfileId', dogProfile?.id);
+      const dogProfileId = dogProfile?.id;
+      if(!dogProfileId) throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No dogProfileId found."
+      })
+
       const traits = await ctx.db.traits.create({
         data: {
           species: input.species,
@@ -34,13 +46,14 @@ export const traitsRouter = createTRPCRouter({
           children: input.children,
           neutered: input.neutered,
           energyLevel: input.energyLevel,
-          dogProfileId: input.dogProfileId,
+          dogProfileId: BigInt(dogProfileId),
         }
       });
       const traitsId = traits.id;
-      const dogProfile = await ctx.db.dogProfile.update({
+      
+      await ctx.db.dogProfile.update({
         where: {
-          id: input.dogProfileId,
+          id: dogProfileId,
         },
         data: {
           traitsId: traitsId,

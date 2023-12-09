@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
 import PostBox from "./Post";
 import type { Post } from "@prisma/client";
+import getUserId from "~/server/helpers/getUserId";
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
 type TraitProps = {
@@ -64,8 +65,8 @@ const ProfileHeader = async (props: ProfileWithUser) => {
 
 
 export default async function ProfilePage(props: ProfileWithUser){
-  const user =  auth();
-  if (!user.userId) {
+  const userId =  await getUserId();
+  if (!userId) {
     // Handle the case when userId is null
     return <div>User not authenticated</div>;
   }
@@ -78,11 +79,11 @@ export default async function ProfilePage(props: ProfileWithUser){
   return (
     <div>
       <ProfileHeader {...props}/>
-      {
+      {/* {
         posts.map((post: Post) => 
         <PostBox key={post.id} post={post}/>
         )
-      }
+      } */}
     </div>
   )
 }

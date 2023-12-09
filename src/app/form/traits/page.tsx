@@ -1,6 +1,5 @@
 'use client'
 import {useForm, type SubmitHandler} from 'react-hook-form';
-import { useAuth } from "@clerk/nextjs";
 import { api } from '~/trpc/react';
 
 import { useRouter } from 'next/navigation';
@@ -23,23 +22,12 @@ export default function TraitsForm () {
     register,
     handleSubmit,
    } = useForm<FormInputs>();
-
-  const {userId} = useAuth();
-  if (!userId) {
-     return <div>User not authenticated</div>;
-  }
   const traits = api.traits.create.useMutation();
-  const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({userId})
-
-  if(isLoading) return <div>Loading...</div>;
-  if (error) return <div>An error occurred: {error.message}</div>;
-
-  const {id} = profile;
-  if(!id) throw new Error("No dog profile id")
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
-    await traits.mutateAsync({...data, dogProfileId: id});
-    router.push('/form/prompts')
+    console.log('data', data)
+    // await traits.mutateAsync({...data});
+    // router.push('/form/prompts')
   };
 
   return (
