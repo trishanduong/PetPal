@@ -14,7 +14,7 @@ const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
   //get the current user:
     const router = useRouter();
     const { data: profile, isLoading, error } = api.profile.getProfileById.useQuery({ userId: currentUserId });
-    const update = api.follows.addFollowing.useMutation();
+    // const update = api.follows.addFollowing.useMutation();
 
     
    if(isLoading) return <div>Loading...</div>;
@@ -24,7 +24,8 @@ const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
     //if they press heart button, send them to "yes"
     const handlePlaydate = async () => {
       //update 'following'
-      await update.mutateAsync({currentUserId: id, likedId: profileId});
+      // await update.mutateAsync({currentUserId: id, likedId: profileId});
+      console.log('add to playdate')
     }
     //if they press x button, send them to "no",
     const handleReject = () => {

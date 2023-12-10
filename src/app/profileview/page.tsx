@@ -1,11 +1,10 @@
 
-import { auth} from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 
 import ProfilePage from "../_components/ProfilePage";
 import Link from "next/link";
-import { getServerAuthSession } from "~/server/auth";
 import getUserId from "~/server/helpers/getUserId";
+import { TRPCClientError } from "@trpc/client";
 
 export default async function Page(){
   const userId = await getUserId();
@@ -15,8 +14,8 @@ export default async function Page(){
   }
   
   const profile = await api.profile.getProfileById.query({userId});
-  console.log("profile in swipe", profile)
-  
+
+  if(!profile || profile === null) throw new TRPCClientError("No profile found.")
   
   return (
     <div className="max-h-full">

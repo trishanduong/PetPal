@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Image from "next/legacy/image";
-import { auth } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
 import PostBox from "./Post";
@@ -28,6 +27,7 @@ const Trait:React.FC<TraitProps>= ({trait, value}) => {
    
 
 const ProfileHeader = async (props: ProfileWithUser) => {
+  if(!props) throw new Error("Invalid props")
   const {profilePic, name, age, bio, traitsId, city} = props;
   
   if(!traitsId) return <div>Error</div>
@@ -72,18 +72,18 @@ export default async function ProfilePage(props: ProfileWithUser){
   }
   //console.log(props, 'in profilepage')
   
-  const {id} = props;
-
+  const id = props?.id;
+  if(props === null || id === undefined) throw new Error("No props")
   const posts: Post[] = await api.post.getPostsByUser.query({dogProfileId: id});
-
+  
   return (
     <div>
       <ProfileHeader {...props}/>
-      {/* {
+      {
         posts.map((post: Post) => 
         <PostBox key={post.id} post={post}/>
         )
-      } */}
+      }
     </div>
   )
 }

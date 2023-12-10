@@ -9,17 +9,17 @@ import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 export const followRouter = createTRPCRouter({
   //update 'following' of dog profile:
-  addFollowing: privateProcedure
-    .input(z.object({
-      currentUserId: z.bigint(),
-      likedId: z.bigint(),
-    }))
-    .mutation(async({ctx, input})=>{
-      await ctx.db.follows.create({
-        data: {
-          followingId: input.likedId,
-          followedById: input.currentUserId,
-        }
-      });
-    }),
+  // addFollowing: privateProcedure
+  //   .input(z.object({
+  //     currentUserId: z.bigint(),
+  //     likedId: z.bigint(),
+  //   }))
+  //   .mutation(async({ctx, input})=>{
+  //     await ctx.db.follows.create({
+  //       data: {
+  //         followingId: input.likedId,
+  //         followedById: input.currentUserId,
+  //       }
+  //     });
+  //   }),
   });

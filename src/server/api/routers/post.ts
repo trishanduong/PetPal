@@ -7,7 +7,7 @@ import getUserId from "~/server/helpers/getUserId";
 
 const data = z.object({
   postId: z.string().optional(),
-  dogProfileId: z.string(),
+  // dogProfileId: z.string(),
   image: z.string(),
   answer: z.string().optional(),
   promptId: z.string(),

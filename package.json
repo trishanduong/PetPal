@@ -31,7 +31,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "superjson": "^1.13.1",
-    "uploadthing": "v6.0.4",
+    "uploadthing": "^6.0.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
