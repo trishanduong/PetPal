@@ -1,12 +1,18 @@
 import Link from "next/link";
-import Dropdown from "./NavAccordion";
-import { getServerAuthSession } from "~/server/auth";
 
-export default async function Nav (){
-  const session = await getServerAuthSession();
+import Dropdown from "./NavAccordion";
+import type { Session } from "next-auth";
+
+interface DesktopNavProps {
+  session: Session,
+}
+
+const DesktopNav:React.FC<DesktopNavProps> = ({
+  session,
+}) => {
   
   return (
-    <div>
+    <div className="hidden lg:block lg:w-full lg:bg-white lg:overflow-y-auto lg:z-40">
       <nav>
         <div className="flex justify-between items-center">
           <Link href="/">
@@ -44,3 +50,6 @@ export default async function Nav (){
     </div>
   )
 }
+
+
+export default DesktopNav;

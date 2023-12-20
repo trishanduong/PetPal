@@ -4,6 +4,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+import { RiArrowDownSFill } from "react-icons/ri";
+import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
+import { RiAccountCircleFill, RiSettings2Fill } from "react-icons/ri";
+
 const Dropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -19,20 +23,7 @@ const Dropdown = () => {
         id="dropdownNavbarLink"
         aria-expanded={isDropdownOpen}>
         {'★'}
-        <svg
-          className="w-4 h-4 ml-2"
-          aria-hidden="true"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        <RiArrowDownSFill />
       </button>
       {isDropdownOpen && (
         <div
@@ -43,19 +34,25 @@ const Dropdown = () => {
             href="/profileview"
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
-            Profile
+            <div className='flex items-center gap-2'>
+              <RiAccountCircleFill className="lg:hidden"/>  Profile
+            </div>
           </Link>
           <Link
             href="/profileview/edit" 
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
-            Settings
+            <div className='flex items-center gap-2'>
+              <RiSettings2Fill className="lg:hidden"/> Settings
+            </div>
           </Link>
           <a
             href="/api/auth/signout"
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
-            Sign out
+            <div className='flex items-center gap-2'>
+            <HiArrowLeftOnRectangle /> Sign out
+            </div>
           </a>
         </div>
       )}

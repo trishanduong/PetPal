@@ -4,7 +4,7 @@
 import { api } from '~/trpc/react';
 import ProfileCard from '~/app/_components/ProfileCard';
 import EditTraitsForm from '~/app/_components/editTraitForm';
-import EditContents from '~/app/_components/EditContents';
+import EditContents from '~/app/_components/editform/EditContents';
 
 export default function EditProfile(){
   const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({type: 'personal'});

@@ -8,8 +8,9 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
 
-import Nav from "./_components/Nav";
+import Nav from "./_components/navigation/DesktopNavigation";
 import Footer from "./_components/Footer";
+import Navigation from "./_components/navigation/Navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,8 +33,9 @@ export default function RootLayout({
         <body className={`font-sans ${inter.variable}`}>
           <TRPCReactProvider cookies={cookies().toString()}>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)}/>
-            <Nav/>
+            <Navigation>
             {children}
+            </Navigation>
             <Footer/>
           </TRPCReactProvider>
         </body>

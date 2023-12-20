@@ -1,14 +1,13 @@
 
-import { auth } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
 
 import ProfilePage from "../_components/ProfilePage";
 import Buttons from "../_components/Buttons";
+import getUserId from "~/server/helpers/getUserId";
 
 export default async function Swipe(){
-  //current user
-  const user =  auth();
-  const currentUserId = user.userId;
+  const currentUserId = await getUserId();
+  
   if (!currentUserId) {
     throw new Error('No user')
   }
