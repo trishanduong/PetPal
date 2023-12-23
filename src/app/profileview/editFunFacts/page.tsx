@@ -3,7 +3,7 @@
 
 import { api } from "~/trpc/react";
 
-import EditFunFactsForm from "~/app/_components/EditFunFactsForm";
+import EditFunFactsForm from "~/app/_components/editform/EditFunFactsForm";
 import EditContents from "~/app/_components/editform/EditContents";
 
 export default function EditFunFacts(){

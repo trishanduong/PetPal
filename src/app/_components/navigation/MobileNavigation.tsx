@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import Dropdown from "./NavAccordion";
+import Dropdown from "./NavDropdown";
 import type { Session } from "next-auth";
 
 import useRoutes from "~/server/helpers/useRoute";
@@ -39,22 +39,6 @@ const MobileNav:React.FC<MobileNavProps> = ({
                 )
               ))}
               {session && <Dropdown/>}
-          </div>
-          <div id="navbar-default">
-              {/*
-              
-              <li>
-                
-                {!session && (
-                  <Link
-                    href={"/api/auth/signin"}
-                    className="flex items-center p-3 py-2 font-extrabold text-amber-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 rounded-full"
-                  >
-                    Login
-                  </Link>
-                  )
-                }
-              </li> */}
           </div>
         </div>
       </nav>

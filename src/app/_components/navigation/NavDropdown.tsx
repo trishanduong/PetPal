@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, { useState } from 'react';
@@ -13,6 +12,7 @@ const Dropdown = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+    console.log('toggle', isDropdownOpen)
   };
 
   return (
@@ -25,7 +25,7 @@ const Dropdown = () => {
         {'★'}
         <RiArrowDownSFill />
       </button>
-      {isDropdownOpen && (
+      { isDropdownOpen && (
         <div
           className="absolute right-0 z-20 w-44 py-2 mt-2 bg-white rounded-lg shadow-xl dark:bg-amber-50"
           id="dropdownNavbar"
@@ -35,7 +35,7 @@ const Dropdown = () => {
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
             <div className='flex items-center gap-2'>
-              <RiAccountCircleFill className="lg:hidden"/>  Profile
+              <RiAccountCircleFill />  Profile
             </div>
           </Link>
           <Link
@@ -43,7 +43,7 @@ const Dropdown = () => {
             className="block px-4 py-2 text-sm text-amber-700 hover:bg-gray-100 dark:text-amber-800 dark:hover:bg-amber-600 dark:hover:text-white"
           >
             <div className='flex items-center gap-2'>
-              <RiSettings2Fill className="lg:hidden"/> Settings
+              <RiSettings2Fill /> Settings
             </div>
           </Link>
           <a

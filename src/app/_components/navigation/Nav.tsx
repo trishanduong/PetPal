@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 
-import Dropdown from "./NavAccordion";
+import Dropdown from "./NavDropdown";
 
 export default async function Nav (){
   const session = await getServerAuthSession();
@@ -30,10 +30,10 @@ export default async function Nav (){
                 {session && <Dropdown/>}
                 {!session && (
                   <Link
-                    href={"/api/auth/signin"}
+                    href={"/auth"}
                     className="flex items-center p-3 py-2 font-extrabold text-amber-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 rounded-full"
                   >
-                    Login
+                    LOGIN
                   </Link>
                   )
                 }

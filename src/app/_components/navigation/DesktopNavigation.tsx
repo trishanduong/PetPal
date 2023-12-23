@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import Dropdown from "./NavAccordion";
+import Dropdown from "./NavDropdown";
 import type { Session } from "next-auth";
 
 interface DesktopNavProps {
@@ -20,25 +20,27 @@ const DesktopNav:React.FC<DesktopNavProps> = ({
               PetPal 🐾
             </div>
           </Link>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+          <div className="w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mr-3 mt-2 justify-items-center md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
               <li>
-              {session && <Link href="/form" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">FORM</Link>}
+                {session && <Link href="/form" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">FORM</Link>}
               </li>
               <li>
-              {session && <Link href="/swipe" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">SWIPE</Link>}
+                {session && <Link href="/swipe" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">SWIPE</Link>}
               </li>
               <li>
                 <Link href='/aboutus' className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">ABOUT US</Link>
               </li>
               <li>
-                {session && <Dropdown/>}
+                { session && <Dropdown /> }
+              </li>
+              <li>
                 {!session && (
                   <Link
-                    href={"/api/auth/signin"}
+                    href={"/auth"}
                     className="flex items-center p-3 py-2 font-extrabold text-amber-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 rounded-full"
                   >
-                    Login
+                    LOGIN
                   </Link>
                   )
                 }

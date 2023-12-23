@@ -3,7 +3,7 @@
 
 import { api } from '~/trpc/react';
 import ProfileCard from '~/app/_components/ProfileCard';
-import EditTraitsForm from '~/app/_components/editTraitForm';
+import EditTraitsForm from '~/app/_components/editform/editTraitForm';
 import EditContents from '~/app/_components/editform/EditContents';
 
 export default function EditProfile(){
