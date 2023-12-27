@@ -14,7 +14,7 @@ const getCurrentDogProfile = async () => {
         userId: session.user.id,
       }
     });
-    console.log('current user in func', currentUser)
+    // console.log('current user in func', currentUser)
     if(!currentUser){
       console.log('No current user')
       return null;

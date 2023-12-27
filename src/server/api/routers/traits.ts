@@ -46,7 +46,7 @@ export const traitsRouter = createTRPCRouter({
           children: input.children,
           neutered: input.neutered,
           energyLevel: input.energyLevel,
-          dogProfileId: BigInt(dogProfileId),
+          dogProfileId: dogProfileId,
         }
       });
       const traitsId = traits.id;

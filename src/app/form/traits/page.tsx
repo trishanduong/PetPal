@@ -26,8 +26,8 @@ export default function TraitsForm () {
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
     console.log('data', data)
-    // await traits.mutateAsync({...data});
-    // router.push('/form/prompts')
+    await traits.mutateAsync({...data});
+    router.push('/form/prompts')
   };
 
   return (

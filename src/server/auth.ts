@@ -49,6 +49,7 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
+    
   },
   adapter: PrismaAdapter(db),
   providers: [
@@ -101,6 +102,7 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
+  
 };
 
 /**

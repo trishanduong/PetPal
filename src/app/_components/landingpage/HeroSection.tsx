@@ -1,8 +1,10 @@
 
 import Image from "next/legacy/image";
 import Link from "next/link";
+import { getServerAuthSession } from "~/server/auth";
 
-const HeroSection = () => {
+const HeroSection = async () => {
+  const session = await getServerAuthSession();
   return (
     <div className="lg:flex lg:bg-yellow-400 lg:w-full lg:h-[85vh]">
       <div className="w-full flex items-center justify-center lg:w-2/5">
@@ -15,9 +17,10 @@ const HeroSection = () => {
       <div className="hidden w-screen flex-col flex-grow justify-center items-center lg:w-3/5 lg:flex lg:flex-col lg:justify-center lg:items-start lg:p-10">
         <h1 className="lg:text-7xl font-extrabold p-3 mb-5 text-amber-950 animate-text bg-gradient-to-r from-amber-900 via-amber-600 to-orange-800 bg-clip-text text-transparent" >The ultimate doggy playdate app.</h1>
         <p className="text-2xl mb-8 pl-8 text-amber-900">Help your dog find their soul playmate!</p>
-        <Link href="/aboutus" className="px-6 py-3 bg-yellow-800 text-white rounded-lg hover:bg-amber-950 shadow-md">
-          Get Started
-        </Link>
+        
+        {session && (<Link href="/form" className="px-6 py-3 bg-yellow-800 text-white rounded-lg hover:bg-amber-950 shadow-md">
+          Set up profile
+        </Link>)}
       </div>
     </div>
   );

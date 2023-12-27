@@ -11,7 +11,7 @@ import Image from "next/legacy/image";
 
 type PromptQueryProps = {
     promptsQuery: {
-        id: bigint;
+        id: string;
         prompt: string;
     }[];
 };
@@ -40,7 +40,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
     if(isLoading) return <div>Loading...</div>
     if (error) return <div>An error occurred: {error.message}</div>;
 
-    const getDefaultValue = (prompt: bigint, field: keyof Post): string | bigint | Date => {
+    const getDefaultValue = (prompt: string, field: keyof Post): string | Date => {
       const foundPost = updatePosts.find(post => post.promptId.toString() === prompt.toString());
       if (!foundPost) {
         throw new Error(`Post with promptId ${prompt} not found.`);

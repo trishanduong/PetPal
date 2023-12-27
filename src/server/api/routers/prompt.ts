@@ -10,7 +10,7 @@ import { TRPCError } from "@trpc/server";
 export const promptRouter = createTRPCRouter({
   getPrompt: publicProcedure
     .input(z.object({
-      promptId: z.bigint(),
+      promptId: z.string(),
     }))
     .query(async({ctx, input})=>{
       

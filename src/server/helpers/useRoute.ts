@@ -25,7 +25,7 @@
          label: 'Swipe', 
          href: '/swipe', 
          icon: HiUsers, 
-         active: pathname === '/users'
+         active: pathname === '/swipe'
        },
      ], [pathname]);
 

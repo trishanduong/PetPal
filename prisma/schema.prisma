@@ -31,18 +31,15 @@ model Account {
 }
 
 model User {
-    id             String         @id @default(cuid())
+    id             String      @id @default(cuid())
     name           String?
-    email          String?        @unique
+    email          String?     @unique
     emailVerified  DateTime?
     image          String?
     hashedPassword String?
     accounts       Account[]
     sessions       Session[]
     dog            DogProfile?
-    conversations  Conversation[] @relation("UserConversations")
-    sentMessages   Message[]      @relation("SentMessages")
-    seenMessages   Message[]      @relation("SeenMessages")
 }
 
 model Session {
@@ -64,7 +61,7 @@ model VerificationToken {
 }
 
 model Conversation {
-    id            String   @id @default(uuid()) // Using UUID for the primary key.
+    id            String   @id @default(uuid())
     createdAt     DateTime @default(now())
     lastMessageAt DateTime @default(now())
     name          String?
@@ -72,7 +69,7 @@ model Conversation {
 
     // Relationships
     messages Message[]
-    users    User[]    @relation("UserConversations")
+    users    DogProfile[] @relation("UserConversations")
 }
 
 model Message {
@@ -85,10 +82,10 @@ model Message {
     conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
     senderId String
-    sender   User   @relation(name: "SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+    sender   DogProfile @relation(name: "SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
     // A list of users who have seen this message.
-    seenBy  User[]   @relation("SeenMessages")
+    seenBy  DogProfile[] @relation("SeenMessages")
     seenIds String[]
 
     @@index([senderId])
@@ -96,7 +93,7 @@ model Message {
 }
 
 model DogProfile {
-    id            BigInt         @id @default(autoincrement())
+    id            String         @id @default(cuid())
     user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String         @unique
     profilePic    String?
@@ -109,6 +106,10 @@ model DogProfile {
     traits        Traits?
     city          String?
     dogPreference DogPreference?
+
+    conversations Conversation[] @relation("UserConversations")
+    sentMessages  Message[]      @relation("SentMessages")
+    seenMessages  Message[]      @relation("SeenMessages")
 }
 
 model DogPreference {
@@ -117,7 +118,7 @@ model DogPreference {
     upperAgeLimit Int
     gender        String
     dog           DogProfile @relation(fields: [dogProfileId], references: [id])
-    dogProfileId  BigInt     @unique
+    dogProfileId  String     @unique
 }
 
 model Traits {
@@ -129,13 +130,13 @@ model Traits {
     neutered     String?
     energyLevel  Int?
     dogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
-    dogProfileId BigInt?     @unique
+    dogProfileId String?     @unique
 }
 
 model Post {
-    id       BigInt  @id @default(autoincrement())
+    id       String  @id @default(cuid())
     prompt   Prompt  @relation(fields: [promptId], references: [id])
-    promptId BigInt
+    promptId String
     image    String?
     answer   String?
 
@@ -143,14 +144,14 @@ model Post {
     updatedAt DateTime @updatedAt
 
     DogProfile   DogProfile? @relation(fields: [dogProfileId], references: [id])
-    dogProfileId BigInt?
+    dogProfileId String?
 
     @@index([dogProfileId])
     @@index([promptId])
 }
 
 model Prompt {
-    id     BigInt @id @default(autoincrement())
+    id     String @id @default(cuid())
     prompt String
     posts  Post[]
 }

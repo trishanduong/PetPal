@@ -1,8 +1,9 @@
 
-import Image from "next/legacy/image";
 import Link from "next/link";
+import { getServerAuthSession } from "~/server/auth";
 
-const MobileHeroSection = () => {
+const MobileHeroSection = async () => {
+    const session = await getServerAuthSession();
 
     return (
       <div className="bg-yellow-400 mt-32 p-3 lg:hidden">
@@ -11,9 +12,9 @@ const MobileHeroSection = () => {
         </h1>
         <p className="text-2xl mb-8 pl-8 text-white italic text-wrap text-center">Help your dog find their soul playmate!</p>
         <div className="flex justify-around">
-          <Link href="/aboutus" className="p-3 bg-yellow-800 text-white rounded-lg hover:bg-amber-950 shadow-md">
-            Get Started
-          </Link>
+          {session && (<Link href="/form" className="p-3 bg-yellow-800 text-white rounded-lg hover:bg-amber-950 shadow-md">
+            Setup Profile
+          </Link>)}
         </div>
       </div>
     )

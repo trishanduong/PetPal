@@ -30,8 +30,8 @@ export const postRouter = createTRPCRouter({
 
       await ctx.db.post.createMany({
         data: input.map(postData => ({
-          promptId: BigInt(postData.promptId),
-          dogProfileId: BigInt(dogProfileId),
+          promptId: postData.promptId,
+          dogProfileId,
           image: postData.image,
           answer: postData.answer,
         })),
@@ -49,8 +49,8 @@ export const postRouter = createTRPCRouter({
         if(!postData.postId) throw new Error('No post data');
         await ctx.db.post.update({
           where: { 
-            id: BigInt(postData.postId),
-            promptId: BigInt(postData.promptId),
+            id: postData.postId,
+            promptId: postData.promptId,
           },
           data: {
             image: postData.image,
@@ -63,7 +63,7 @@ export const postRouter = createTRPCRouter({
     })),
 
   getPostsByUser: publicProcedure
-    .input(z.object({ dogProfileId: z.bigint() }))
+    .input(z.object({ dogProfileId: z.string() }))
     .query(async({ctx, input }) => {
       const posts: Post[] = await ctx.db.post.findMany({
         where: {

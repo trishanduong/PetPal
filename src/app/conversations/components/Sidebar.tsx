@@ -5,8 +5,9 @@ import DesktopSidebar from "./sidebar/DesktopSidebar";
 async function SideBar({children}:{
   children: React.ReactNode;
 }){
+
   const currentUser = await getCurrentDogProfile();
-  console.log('current user', currentUser);
+  // console.log('current user', currentUser);
 
   return (
     <div>

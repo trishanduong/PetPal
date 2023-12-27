@@ -3,7 +3,7 @@ import type { Post, Prompt } from "@prisma/client";
 import Image from "next/legacy/image";
 
 type PostBoxProps = {
-  key: bigint,
+  key: string,
   post: Post
 };
 

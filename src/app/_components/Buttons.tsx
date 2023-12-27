@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 //Props: profileId of the user we are rejecting/accepted
 type ButtonProps = {
-  profileId: bigint,
+  profileId: string,
   currentUserId: string,
 };
 
