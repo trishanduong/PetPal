@@ -6,9 +6,9 @@ import MobileHeroSection from "./_components/landingpage/MobileHeroSection";
 import { getServerAuthSession } from "~/server/auth";
 
 
-export default async function Home() {
-  const session = await getServerAuthSession();
-  // console.log(session)
+export default function Home() {
+  const session = getServerAuthSession();
+  console.log(session)
   return (
     <main className="flex top-0 min-h-screen flex-col items-center w-screen">
       <HeroSection />

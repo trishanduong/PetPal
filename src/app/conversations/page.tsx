@@ -1,15 +1,22 @@
 'use client';
 
+import clsx from "clsx";
+
 import useConversation from "~/server/helpers/useConversation";
+import EmptyState from "../_components/EmptyState";
 
 const Home = () => {
     const { isOpen } = useConversation();
 
   return (
-    <div>
-      <div className="lg:pl-80 h-full lg:block bg-lime-300">
-        
-      </div>
+    <div className={
+        clsx(
+          'lg:pl-80 h-screen lg:block',
+          isOpen ? 'block' : 'hidden'
+        )
+      }
+    >
+      <EmptyState />
     </div>
   )
 };

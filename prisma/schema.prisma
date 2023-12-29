@@ -42,6 +42,29 @@ model User {
     dog            DogProfile?
 }
 
+model DogProfile {
+    id            String         @id @default(cuid())
+    user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        String         @unique
+    profilePic    String?
+    name          String
+    sex           String
+    age           Int
+    bio           String         @db.String(255)
+    posts         Post[]
+    traitsId      String?        @unique
+    traits        Traits?
+    city          String?
+    dogPreference DogPreference?
+
+    conversations Conversation[] @relation("UserConversations")
+    sentMessages  Message[]      @relation("SentMessages")
+    seenMessages  Message[]      @relation("SeenMessages")
+
+    matchesAsDog1 Match[] @relation("matchesAsDog1")
+    matchesAsDog2 Match[] @relation("matchesAsDog2")
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
@@ -68,8 +91,9 @@ model Conversation {
     isGroup       Boolean?
 
     // Relationships
-    messages Message[]
-    users    DogProfile[] @relation("UserConversations")
+    messages          Message[]
+    users             DogProfile[]       @relation("UserConversations")
+    matchConversation MatchConversation?
 }
 
 model Message {
@@ -90,26 +114,6 @@ model Message {
 
     @@index([senderId])
     @@index([conversationId])
-}
-
-model DogProfile {
-    id            String         @id @default(cuid())
-    user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId        String         @unique
-    profilePic    String?
-    name          String
-    sex           String
-    age           Int
-    bio           String         @db.String(255)
-    posts         Post[]
-    traitsId      String?        @unique
-    traits        Traits?
-    city          String?
-    dogPreference DogPreference?
-
-    conversations Conversation[] @relation("UserConversations")
-    sentMessages  Message[]      @relation("SentMessages")
-    seenMessages  Message[]      @relation("SeenMessages")
 }
 
 model DogPreference {
@@ -154,4 +158,27 @@ model Prompt {
     id     String @id @default(cuid())
     prompt String
     posts  Post[]
+}
+
+model Match {
+    id           String             @id @default(cuid())
+    dog1Id       String
+    dog2Id       String
+    createdAt    DateTime           @default(now())
+    dog1         DogProfile         @relation(name: "matchesAsDog1", fields: [dog1Id], references: [id], onDelete: Cascade)
+    dog2         DogProfile         @relation(name: "matchesAsDog2", fields: [dog2Id], references: [id], onDelete: Cascade)
+    conversation MatchConversation?
+
+    @@unique([dog1Id, dog2Id])
+}
+
+model MatchConversation {
+    id             String       @id @default(cuid())
+    matchId        String
+    conversationId String
+    match          Match        @relation(fields: [matchId], references: [id], onDelete: Cascade)
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    @@unique([matchId])
+    @@unique([conversationId])
 }
