@@ -15,16 +15,18 @@ const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
     const router = useRouter();
     const { data: profile, isLoading, error } = api.profile.getProfileById.useQuery({ userId: currentUserId });
     // const update = api.follows.addFollowing.useMutation();
+    const createConvo = api.match.handleSwipeRight.useMutation();
 
     
    if(isLoading) return <div>Loading...</div>;
    if (error) return <div>An error occurred: {error.message}</div>;
    const id = profile?.id;
+   if(!id) throw new Error('No id');
 
     //if they press heart button, send them to "yes"
     const handlePlaydate = async () => {
       //update 'following'
-      // await update.mutateAsync({currentUserId: id, likedId: profileId});
+      await createConvo.mutateAsync({swipingDogId: id, swipedDogId: profileId});
       console.log('add to playdate')
     }
     //if they press x button, send them to "no",

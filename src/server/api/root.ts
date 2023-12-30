@@ -1,10 +1,11 @@
+
 import { postRouter } from "~/server/api/routers/post";
 import { profileRouter } from "./routers/profile";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { traitsRouter } from "./routers/traits";
 import { promptRouter } from "./routers/prompt";
-import { followRouter } from "./routers/follows";
-import { conversationRouter } from "./routers/conversations";
+import { conversationRouter } from "./routers/conversations"
+import { matchesRouter } from "./routers/matches";
 
 /**
  * This is the primary router for your server.
@@ -16,7 +17,7 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   traits: traitsRouter,
   prompt: promptRouter,
-  follows: followRouter,
+  match: matchesRouter,
   conversation: conversationRouter,
 });
 
