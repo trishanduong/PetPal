@@ -10,6 +10,7 @@ export default async function ConversationsLayout({
   children: React.ReactNode
 }) {
   const conversations = await api.conversation.getConversations.query();
+  console.log('conversations: ', conversations)
   
   return (
     <SideBar>

@@ -83,39 +83,6 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Conversation {
-    id            String   @id @default(uuid())
-    createdAt     DateTime @default(now())
-    lastMessageAt DateTime @default(now())
-    name          String?
-    isGroup       Boolean?
-
-    // Relationships
-    messages          Message[]
-    users             DogProfile[]       @relation("UserConversations")
-    matchConversation MatchConversation?
-}
-
-model Message {
-    id        String   @id @default(uuid())
-    body      String?
-    image     String?
-    createdAt DateTime @default(now())
-
-    conversationId String
-    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-    senderId String
-    sender   DogProfile @relation(name: "SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-
-    // A list of users who have seen this message.
-    seenBy  DogProfile[] @relation("SeenMessages")
-    seenIds String[]
-
-    @@index([senderId])
-    @@index([conversationId])
-}
-
 model DogPreference {
     id            String     @id @default(uuid())
     lowerAgeLimit Int
@@ -181,4 +148,37 @@ model MatchConversation {
 
     @@unique([matchId])
     @@unique([conversationId])
+}
+
+model Conversation {
+    id            String   @id @default(uuid())
+    createdAt     DateTime @default(now())
+    lastMessageAt DateTime @default(now())
+    name          String?
+    isGroup       Boolean?
+
+    // Relationships
+    messages          Message[]
+    users             DogProfile[]       @relation("UserConversations")
+    matchConversation MatchConversation?
+}
+
+model Message {
+    id        String   @id @default(uuid())
+    body      String?
+    image     String?
+    createdAt DateTime @default(now())
+
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    senderId String
+    sender   DogProfile @relation(name: "SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+    // A list of users who have seen this message.
+    seenBy  DogProfile[] @relation("SeenMessages")
+    seenIds String[]
+
+    @@index([senderId])
+    @@index([conversationId])
 }

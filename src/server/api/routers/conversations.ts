@@ -1,4 +1,5 @@
 
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import getCurrentDogProfile from "~/server/helpers/getCurrentDogProfile";
@@ -8,15 +9,13 @@ export const conversationRouter = createTRPCRouter({
   getConversations: privateProcedure
     .query(async({ctx})=>{
       const currentDog = await getCurrentDogProfile();
-
+      if(!currentDog) throw new TRPCError({code: "BAD_REQUEST", message:"Current dog not found"});
+      
       const conversations = await ctx.db.conversation.findMany({
         where: {
           users: {
             some: {
-              id: currentDog?.userId,
-              // dog: {
-              //   isNot: null 
-              // }
+              userId: currentDog.userId,
             }
           }
         },

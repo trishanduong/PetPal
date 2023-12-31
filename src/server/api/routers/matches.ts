@@ -9,8 +9,6 @@ import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 import type { Match } from "@prisma/client";
 
-import getCurrentDogProfile from "~/server/helpers/getCurrentDogProfile";
-
 export const matchesRouter = createTRPCRouter({
   handleSwipeRight: privateProcedure
     .input(z.object({
@@ -37,14 +35,15 @@ export const matchesRouter = createTRPCRouter({
                 dog2Id: swipedDogId, 
               },
             });
+            console.log('created potential match: ', newPotentialMatch);
         
             return newPotentialMatch;
           } else {
-              
+              //if we have a mutual match, create conversation between users
               const newConversation = await ctx.db.conversation.create({
                   data: {
                     isGroup: false,
-                     matchConversation: {
+                    matchConversation: {
                         create: {
                           matchId: existingMatch.id,
                         },
@@ -57,11 +56,36 @@ export const matchesRouter = createTRPCRouter({
                     },
                   },
               });
-              console.log('newConversation', newConversation)
 
-            // This might mean doing nothing, updating the existing record, or even creating a conversation if it's now a mutual match
-            return existingMatch;
+              console.log('newConversation', newConversation);
+
+            return {
+              existingMatch,
+              newConversation,
+            };
           }
-    })
+    }),
+    handleSwipeLeft: privateProcedure
+      .input(z.object({
+        swipingDogId: z.string(),
+        swipedDogId: z.string(),
+      }))
+      .mutation(async({ctx, input})=>{
+        const { swipingDogId, swipedDogId } = input;
+
+        const deletedMatches = await ctx.db.match.deleteMany({
+            where: {
+                OR: [
+                    { dog1Id: swipingDogId, dog2Id: swipedDogId },
+                    { dog1Id: swipedDogId, dog2Id: swipingDogId },
+                ],
+            },
+        });
+
+        console.log('no match.');
+
+        return { count: deletedMatches.count };
+      })
+
 });
 
