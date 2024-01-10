@@ -7,7 +7,7 @@ await import("./src/env.mjs");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-   domains: ['utfs.io','st3.depositphotos.com','cdn.discordapp.com'],
+   domains: ['utfs.io', 'st3.depositphotos.com', 'cdn.discordapp.com', 'res.cloudinary.com'],
   },
 };
 

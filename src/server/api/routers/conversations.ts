@@ -37,4 +37,26 @@ export const conversationRouter = createTRPCRouter({
 
       return conversations;
     }),
-  });
+  getConversationById: privateProcedure
+    .input(z.object({
+      conversationId: z.string(),
+    }))
+    .query(async({ctx, input})=>{
+      try {
+        const currentUser = await getCurrentDogProfile();
+        if(!currentUser) return null;
+        const conversation = await ctx.db.conversation.findUnique({
+          where: {
+            id: input.conversationId,
+          },
+          include: {
+            users: true,
+          }
+        })
+        return conversation; 
+        
+      } catch (error){
+        return null;
+      }
+    })
+});

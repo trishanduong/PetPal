@@ -22,11 +22,10 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   data,
   selected
 }) => {
-    console.log('data', data)
+
     const session = useSession();
     const router = useRouter();
     const otherUser = useOtherUser(data);
-    console.log('otherUser', otherUser);
 
     const handleClick = useCallback(() => {
       router.push(`/conversations/${data.id}`);
@@ -41,20 +40,20 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     const userEmail = useMemo(() => session.data?.user?.email,
     [session.data?.user?.email]);
     
-    // const hasSeen = useMemo(() => {
-    //   if (!lastMessage) {
-    //     return false;
-    //   }
+    const hasSeen = useMemo(() => {
+      if (!lastMessage) {
+        return false;
+      }
   
-    //   const seenArray = lastMessage.seenBy || [];
+      const seenArray = lastMessage.seenBy || [];
   
-    //   if (!userEmail) {
-    //     return false;
-    //   }
+      if (!userEmail) {
+        return false;
+      }
   
-    //   return seenArray
-    //     .filter((user) => user.email === userEmail).length !== 0;
-    // }, [userEmail, lastMessage]);
+      return seenArray
+        .filter((user) => user.name === userEmail).length !== 0;
+    }, [userEmail, lastMessage]);
   
     const lastMessageText = useMemo(() => {
       if (lastMessage?.image) {
@@ -67,6 +66,8 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   
       return 'Started a conversation';
     }, [lastMessage]);
+
+    if(!otherUser) return null;
 
     return ( 
         <div
@@ -86,15 +87,15 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
             selected ? 'bg-neutral-100' : 'bg-white'
           )}
         >
-          {/* <Avatar user={otherUser} /> */}
+          <Avatar user={otherUser} />
           <div className="min-w-0 flex-1">
             <div className="focus:outline-none">
               <span className="absolute inset-0" aria-hidden="true" />
               <div className="flex justify-between items-center mb-1">
                 <p className="text-md font-medium text-gray-900">
-                  {/* {data.name ?? otherUser.name} */}
+                  {data.name ?? otherUser.name}
                 </p>
-                {/* {lastMessage?.createdAt && (
+                {lastMessage?.createdAt && (
                   <p 
                     className="
                       text-xs 
@@ -104,14 +105,14 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                   >
                     {format(new Date(lastMessage.createdAt), 'p')}
                   </p>
-                )} */}
+                )}
               </div>
               <p 
                 className={clsx(`
                   truncate 
                   text-sm
                   `,
-                //   hasSeen ? 'text-gray-500' : 'text-black font-medium'
+                  hasSeen ? 'text-gray-500' : 'text-black font-medium'
                 )}>
                   {lastMessageText}
                 </p>

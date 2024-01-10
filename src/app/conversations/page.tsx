@@ -1,27 +1,24 @@
-'use client';
 
-import clsx from "clsx";
+import { api } from "~/trpc/server";
 
-import useConversation from "~/server/helpers/useConversation";
-import EmptyState from "../_components/EmptyState";
-import { api } from "~/trpc/react";
+import Conversation from "./components/convo/Conversation";
+import ConversationList from "./components/sidebar/ConversationList";
 
-const Home = () => {
-  const { isOpen } = useConversation();
-  // const convo = api.conversation.getConversations.useQuery();
-  // console.log('conver', convo);
+export default async function Home() {
+  const conversations = await api.conversation.getConversations.query();
+
+  console.log('conversations in home: ', conversations)
 
   return (
-    <div className={
-        clsx(
-          'lg:pl-80 h-screen lg:block',
-          isOpen ? 'block' : 'hidden'
-        )
-      }
-    >
-      <EmptyState />
+    <div className="flex w-ful h-screen">
+      <div className="lg:w-1/5 bg-amber-300 border-r border-amber-400">
+        <ConversationList initialItems={conversations}/>
+      </div>
+      <div className='lg:w-4/5'>
+        <div className="bg-amber-100 h-screen">
+          <Conversation />
+        </div>
+      </div>
     </div>
   )
 };
-
-export default Home;

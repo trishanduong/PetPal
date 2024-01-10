@@ -18,36 +18,19 @@ interface ConversationListProps {
 const ConversationList: React.FC<ConversationListProps> = ({
   initialItems,
 }) => {
+  const router = useRouter();
   const [items, setItems] = useState(initialItems);
-  // console.log('items', items)
   
   const { conversationId, isOpen } = useConversation();
-  const router = useRouter();
 
   return ( 
-    <aside className={clsx(`
-        fixed 
-        inset-y-0 
-        pb-20
-        lg:pb-0
-        lg:left-20 
-        lg:w-80 
-        lg:block
-        overflow-y-auto 
-        bg-white
-        border-r 
-        border-gray-200 
-    `,
-        isOpen ? 'hidden' : 'block w-full left-0'
-    )}
-    >
+    <aside className='block w-full left-0'>
       <div className="px-5">
         <div className="flex justify-between mb-4 pt-4">
           <div className="
             text-2xl
             font-bold
             text-neutral-800
-
           ">Messages
           </div>
           <div 
