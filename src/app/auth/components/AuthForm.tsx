@@ -29,7 +29,7 @@ const AuthForm = () => {
 
   useEffect(()=> {
     if(session.status === 'authenticated'){
-      router.push('/users')
+      router.push('/swipe')
     }
   }, [session?.status, router]);
 
