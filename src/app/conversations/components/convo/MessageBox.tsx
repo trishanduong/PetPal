@@ -18,13 +18,14 @@ const MessageBox:React.FC<MessageBoxProps> = ({
    isLast,
 }) => {
   const session = useSession();
-  const isOwn = session?.data?.user?.email === data?.sender?.email;
+  // const hi = session.data?.user.id
+  const isOwn = session?.data?.user.id === data?.sender.userId;
   // filtering through data.seen and removing sener user fro m the people hwo saw the mesasge (from seeing their own message), map over filtered array, and return name of each user that has seen the message
-//   const seenList = (data.seen || [])
-//     .filter((user)=>{ user.email !== data.sender.email})
-//     .map((user)=> user.name)
-//     .join(', ');
-
+  const seenList = (data.seenBy || [])
+    .filter((user)=>{ user.userId !== data.sender.userId})
+    .map((user)=> user.name)
+    .join(', ');
+  // console.log(seenList)
   
   const container = clsx(`
     flex gap-3 p-4`,
@@ -59,7 +60,7 @@ const MessageBox:React.FC<MessageBoxProps> = ({
             <div>{data.body}</div>
           )}
         </div>
-        {/* {isLast && isOwn && seenList.length > 0 && (
+        {isLast && isOwn && seenList.length > 0 && (
           <div 
             className="
             text-xs 
@@ -69,7 +70,7 @@ const MessageBox:React.FC<MessageBoxProps> = ({
           >
             {`Seen by ${seenList}`}
           </div>
-        )} */}
+        )}
       </div>
     </div>
   )

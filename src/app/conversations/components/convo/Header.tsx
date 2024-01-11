@@ -30,10 +30,9 @@ const Header: React.FC<HeaderProps> = ({
   if(!otherUser){
     return null;
   }
-  console.log("otherUser", otherUser)
 
   return (
-    <div className="bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm">
+    <div className="bg-amber-50 w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm">
       <div className="flex gap-3 items-center">
         <Link href='/conversations' className="lg:hidden block text-sky-600 transition cursor-pointer">
           <HiChevronLeft size={32}/>

@@ -7,7 +7,7 @@ import ConversationList from "./components/sidebar/ConversationList";
 export default async function Home() {
   const conversations = await api.conversation.getConversations.query();
 
-  console.log('conversations in home: ', conversations)
+  // console.log('conversations in home: ', conversations)
 
   return (
     <div className="flex w-ful h-screen">
@@ -15,8 +15,8 @@ export default async function Home() {
         <ConversationList initialItems={conversations}/>
       </div>
       <div className='lg:w-4/5'>
-        <div className="bg-amber-100 h-screen">
-          <Conversation />
+        <div className="bg-amber-100 h-screen p-10 font-bold text-2xl text-amber-800">
+          Select a conversation.
         </div>
       </div>
     </div>

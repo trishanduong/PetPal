@@ -12,7 +12,7 @@ const Conversation: React.FC = () => {
     <div className={
       clsx( isOpen ? 'block' : 'hidden')
     }>
-      <EmptyState />
+      {/* <EmptyState /> */}
     </div>
   )
 }

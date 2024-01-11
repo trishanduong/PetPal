@@ -33,7 +33,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   
     const lastMessage = useMemo(() => {
       const messages = data.messages || [];
-  
+      console.log('messages: ', messages) //.filter((message)=>{message.createdAt()})
       return messages[messages.length - 1];
     }, [data.messages]);
   
@@ -59,10 +59,10 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
       if (lastMessage?.image) {
         return 'Sent an image';
       }
-  
+      
       if (lastMessage?.body) {
         return lastMessage?.body
-      }
+      };
   
       return 'Started a conversation';
     }, [lastMessage]);
@@ -79,12 +79,12 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
             items-center 
             space-x-3 
             p-3 
-            hover:bg-neutral-100
+            hover:bg-amber-100
             rounded-lg
             transition
             cursor-pointer
             `,
-            selected ? 'bg-neutral-100' : 'bg-white'
+            selected ? 'bg-amber-200' : 'bg-white'
           )}
         >
           <Avatar user={otherUser} />

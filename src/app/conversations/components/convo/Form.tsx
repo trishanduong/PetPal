@@ -1,14 +1,19 @@
 'use client'
+import { api } from "~/trpc/react";
 
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
-import useConversation from "~/server/helpers/useConversation";
-
+import { CldUploadButton } from "next-cloudinary";
+import type { CldUploadWidgetResults } from "next-cloudinary";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 
+import useConversation from "~/server/helpers/useConversation";
+
 import MessageInput from "./MessageInput";
-import { CldUploadButton } from "next-cloudinary";
+
 
 const Form = () => {
+
+  const create = api.conversation.createMessage.useMutation(); 
   const { conversationId } = useConversation();
   
   const { 
@@ -18,36 +23,33 @@ const Form = () => {
     }
   } = useForm<FieldValues>({
     defaultValues: {
+      image:'',
       message: ''
     }
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log('submit')
+  const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+    const { message, image } = data;
+    console.log(data);
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    await create.mutateAsync({image, conversationId, message})
   };
 
-  const handleUpload = (result: any) => {
-    // axios.post('/api/messages', {
-    //   image: result?.info?.secure_url,
-    //   conversationId,
-    // });
+  const handleUpload = (result: CldUploadWidgetResults) => {
+    if (result?.info && typeof result.info !== 'string' && result.info.secure_url){
+      const url = result?.info?.secure_url;
+      console.log('uplaoded photo')
+      setValue('image', url);
+    };
   } 
 
   return (
-    <div className="py-4 
-    px-4 
-    bg-white 
-    border-t 
-    flex 
-    items-center 
-    gap-2 
-    lg:gap-4 
-    w-full
-    ">
+    <div className="py-4 px-4 bg-amber-50 border-t flex items-center gap-2 lg:gap-4 w-full z-90">
       <CldUploadButton
         options={{ maxFiles: 1 }}
         onUpload={handleUpload}
-        uploadPreset="qlbx9jwj"
+        uploadPreset="ym3gagri"
       >
         <HiPhoto size={28} className="text-sky-500" />
       </CldUploadButton>

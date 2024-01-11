@@ -2,21 +2,20 @@ import { api } from "~/trpc/server";
 
 import ConversationList from "../components/sidebar/ConversationList";
 import Header from "../components/convo/Header";
-// import Body from "./components/Body";
-// import Form from "./components/Form";
+import Body from "../components/convo/Body";
+import Form from "../components/convo/Form";
 
 import EmptyState from "~/app/_components/EmptyState";
-import Form from "../components/convo/Form";
 
 interface IParams {
   conversationId: string,
 }
 
 const conversationId = async ({params} : {params: IParams}) => {
-   const conversations = await api.conversation.getConversations.query();
-   const conversation = await api.conversation.getConversationById.query({conversationId: params.conversationId});
+  const conversations = await api.conversation.getConversations.query();
+  const conversation = await api.conversation.getConversationById.query({conversationId: params.conversationId});
 
-  //  const messages = await getMessages(params.conversationId);
+  const messages = await api.conversation.getMessages.query({ conversationId: params.conversationId });
 
      if(!conversation || !conversations) {
       return (
@@ -34,8 +33,9 @@ const conversationId = async ({params} : {params: IParams}) => {
           <ConversationList initialItems={conversations}/>
         </div>
         <div className='lg:w-4/5'>
-          <div className="bg-amber-100 h-screen">
+          <div className="bg-amber-100 h-full flex flex-col">
             <Header conversation={conversation} />
+            <Body initialMessages={messages} />
             <Form  />
           </div>
         </div>
