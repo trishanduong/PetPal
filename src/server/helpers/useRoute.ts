@@ -27,12 +27,12 @@ const useRoutes = () => {
     icon: HiUsers, 
     active: pathname === '/swipe'
     },
-    {
-      label: 'Logout', 
-      onClick: () => signOut(),
-      href: '#',
-      icon: HiArrowLeftOnRectangle, 
-    }
+    // {
+    //   label: 'Logout', 
+    //   onClick: () => signOut(),
+    //   href: '#',
+    //   icon: HiArrowLeftOnRectangle, 
+    // }
   ], [pathname]);
 
   return routes;

@@ -27,7 +27,12 @@ const DesktopNav:React.FC<DesktopNavProps> = ({
                 {session && <Link href="/swipe" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">SWIPE</Link>}
               </li>
               <li>
-                <Link href='/aboutus' className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">ABOUT US</Link>
+                {session && <Link href="/conversations" className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">CHAT</Link>}
+              </li>
+              <li>
+                {!session && (
+                  <Link href='/aboutus' className="flex items-center p-3 py-2 font-bold text-gray-900 bg-white hover:bg-gray-100 hover:dark:bg-teal-600 hover:text-white rounded-full">ABOUT US</Link>
+                )}
               </li>
               <li>
                 {session && (<Link

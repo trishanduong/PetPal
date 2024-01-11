@@ -89,8 +89,8 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
                     />
                 }}
               />
-              <div className="flex">
-                <Image src={typeof getDefaultValue(prompt.id, "image") !== 'bigint' ? getDefaultValue(prompt.id, "image").toString() : ''} width={250} height={300} alt="lol" className="rounded-lg p-1"></Image>
+              <div className="flex p-10">
+                <Image src={typeof getDefaultValue(prompt.id, "image") !== 'bigint' ? getDefaultValue(prompt.id, "image").toString() : ''} width={250} height={300} alt="lol" className="rounded-lg p-5"></Image>
                 <UploadButton
                     endpoint="imageUploader"
                     onClientUploadComplete={(res) => {
@@ -99,7 +99,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
                     onUploadError={(error: Error) => {
                         alert(`ERROR! ${error.message}`);
                         }}
-                    className="py-4"
+                    className="p-4"
                 />
               </div>
             </div>
