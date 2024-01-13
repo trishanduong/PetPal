@@ -63,6 +63,8 @@ model DogProfile {
 
     matchesAsDog1 Match[] @relation("matchesAsDog1")
     matchesAsDog2 Match[] @relation("matchesAsDog2")
+
+    notifications Notification[] 
 }
 
 model Session {
@@ -181,4 +183,16 @@ model Message {
 
     @@index([senderId])
     @@index([conversationId])
+}
+
+model Notification {
+    id            String    @id @default(uuid())
+    notification  String
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    dogProfile    DogProfile @relation(fields: [dogProfileId], references: [id])
+    dogProfileId  String
+
+    @@index([dogProfileId])
 }

@@ -31,7 +31,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
     const {
       handleSubmit,
       setValue,
-      control
+      control,
     } = useForm();
     const update = api.post.updatePosts.useMutation();
     const {data: updatePosts, isLoading, error} = api.post.getPostsForEdit.useQuery();
@@ -49,9 +49,12 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
       setValue(`${prompt}.dogProfileId`, foundPost.dogProfileId?.toString());
       setValue(`${prompt}.promptId`, foundPost.promptId.toString());
       setValue(`${prompt}.postId`, foundPost.id.toString());
+
       //Keep old image information if they don't update it. 
       const value = foundPost[field];
-      if(field === "image") setValue(`${prompt}.image`, foundPost[field]);
+      if(field === "image") {
+        setValue(`${prompt}.image`, foundPost[field]);
+      };
       if (value === null) {
         throw new Error(`Field ${field} is null for post with promptId ${prompt}.`);
       };
@@ -90,7 +93,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
                 }}
               />
               <div className="flex p-10">
-                <Image src={typeof getDefaultValue(prompt.id, "image") !== 'bigint' ? getDefaultValue(prompt.id, "image").toString() : ''} width={250} height={300} alt="lol" className="rounded-lg p-5"></Image>
+                <Image src={typeof getDefaultValue(prompt.id, "image") !== 'bigint' ? getDefaultValue(prompt.id, "image").toString() : ''} width={200} height={300} alt="lol" className="rounded-lg p-5"></Image>
                 <UploadButton
                     endpoint="imageUploader"
                     onClientUploadComplete={(res) => {

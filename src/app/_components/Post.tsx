@@ -21,11 +21,21 @@ const PostBox = async(props: PostBoxProps) => {
           <span className="text-3xl py-2 font-bold text-orange-950">✦ {prompt}</span>
           <div className="text-center text-2xl text-orange-800 font-medium py-2 ">{answer}</div>
           <div style={{ position: 'relative', height: 'fit-content'}}>
-            <Image className="rounded-md" src={`${image}`} alt={`${answer}`} layout="responsive" width={300} height={300} style={{
-              objectFit: 'cover',
-              width: '100%', 
-              height: '100%',
-            }} >
+            <Image className="rounded-md" src={`${image}`} alt={`${answer}`} 
+              // layout="responsive" 
+              width={300} 
+              height={400} 
+              // style={{
+              // objectFit: 'cover',
+              // width: '100%', 
+              // height: 'auto',
+              // }} 
+              sizes="100vw"
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+            >
             </Image>
           </div>
         </div>

@@ -1,6 +1,7 @@
 
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import conversationId from "~/app/conversations/[conversationId]/page";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import getCurrentDogProfile from "~/server/helpers/getCurrentDogProfile";
 
@@ -146,6 +147,50 @@ export const conversationRouter = createTRPCRouter({
         
       } catch (error){
         return null;
+      }
+    }),
+  //Delete Messages (current conversation) - unmatching other dog profile
+  deleteMessage: privateProcedure 
+    .input(z.object({
+      conversationId: z.string(),
+    }))
+    .mutation(async({ctx, input})=>{
+      console.log('deleted');
+      try {
+        const currentDogProfile = await getCurrentDogProfile();
+        if(!currentDogProfile) throw new TRPCError({ code:"UNAUTHORIZED" });
+         //Find existing conversation
+        const existingConversation = await ctx.db.conversation.findUnique({
+          where: {
+            id: input.conversationId,
+          },
+          include: {
+            users: true,
+          }
+        });
+
+        if(!existingConversation){
+          throw new TRPCError( {code:"BAD_REQUEST" })
+        };
+
+        // If this conversation exists, delete the conversation
+        const deletedConversation = await ctx.db.conversation.deleteMany({
+          where: {
+            id: input.conversationId,
+            users: {
+              some: {
+                userId: currentDogProfile.userId
+              }
+            }
+          }
+        });
+
+        //Matches?
+        
+
+      } catch (error) {
+        console.log(error, "ERROR_CONVERSATION_DELETE");
+        throw new TRPCError({code: "INTERNAL_SERVER_ERROR"})
       }
     })
 });

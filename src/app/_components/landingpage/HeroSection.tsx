@@ -6,7 +6,7 @@ import { getServerAuthSession } from "~/server/auth";
 const HeroSection = async () => {
   const session = await getServerAuthSession();
   return (
-    <div className="lg:flex lg:bg-yellow-400 lg:w-full lg:h-[85vh]">
+    <div className="lg:flex lg:bg-yellow-400 lg:w-full lg:h-screen">
       <div className="w-full flex items-center justify-center lg:w-2/5">
         <div className="hidden lg:absolute lg:flex lg:items-center lg:justify-center lg:bg-teal-500 lg:rounded-full lg:h-150 lg:w-100 lg:overflow-hidden"> 
           <Image src="https://utfs.io/f/afc3607d-2be4-41d0-b6f8-f58dcf324f90-1jx1rj.png" alt="mockup" layout="fill"

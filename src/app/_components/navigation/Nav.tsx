@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 
 import Dropdown from "./NavDropdown";
+import MobileNav from "./MobileNavigation";
 
 export default async function Nav (){
   const session = await getServerAuthSession();
@@ -39,6 +40,7 @@ export default async function Nav (){
                 }
               </li>
             </ul>
+            
           </div>
         </div>
       </nav>

@@ -27,7 +27,7 @@ export type FormInputs = {
 };
 
 
-export default function ProfileForm() {
+export default function ProfileForm () {
   const [percent, setPercent] = useState(5);
   const router = useRouter();
   const {

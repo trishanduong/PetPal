@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
@@ -18,53 +12,59 @@ export const matchesRouter = createTRPCRouter({
     .mutation(async ({ctx, input})=>{
       const { swipingDogId, swipedDogId } = input;
 
-      const existingMatch = await ctx.db.match.findFirst({
-            where: {
-              OR: [
-                { dog1Id: swipingDogId, dog2Id: swipedDogId },
-                { dog1Id: swipedDogId, dog2Id: swipingDogId },
-              ],
-            },
+      try {
+        const existingMatch = await ctx.db.match.findFirst({
+          where: {
+            OR: [
+              { dog1Id: swipingDogId, dog2Id: swipedDogId },
+              { dog1Id: swipedDogId, dog2Id: swipingDogId },
+            ],
+          },
         });
 
         if (!existingMatch) {
-            // No existing match or potential match found - create a new potential match
-            const newPotentialMatch: Match = await ctx.db.match.create({
+          // No existing match or potential match found - create a new potential match
+          const newPotentialMatch: Match = await ctx.db.match.create({
+            data: {
+              dog1Id: swipingDogId, 
+              dog2Id: swipedDogId, 
+            },
+          });
+          console.log('created potential match: ', newPotentialMatch);
+      
+          return newPotentialMatch;
+        } else {
+          //if we have a mutual match, create conversation between users
+          const newConversation = await ctx.db.conversation.create({
               data: {
-                dog1Id: swipingDogId, 
-                dog2Id: swipedDogId, 
-              },
-            });
-            console.log('created potential match: ', newPotentialMatch);
-        
-            return newPotentialMatch;
-          } else {
-              //if we have a mutual match, create conversation between users
-              const newConversation = await ctx.db.conversation.create({
-                  data: {
-                    isGroup: false,
-                    matchConversation: {
-                        create: {
-                          matchId: existingMatch.id,
-                        },
-                    },
-                    users: {
-                        connect: [
-                            { id: swipingDogId }, 
-                            { id: swipedDogId} 
-                        ],
-                    },
+                  isGroup: false,
+                  matchConversation: {
+                      create: {
+                        matchId: existingMatch.id,
+                      },
                   },
-              });
+                  users: {
+                      connect: [
+                          { id: swipingDogId }, 
+                          { id: swipedDogId} 
+                      ],
+                  },
+                },
+            });
 
-              console.log('newConversation', newConversation);
+          console.log('newConversation', newConversation);
 
-            return {
-              existingMatch,
-              newConversation,
-            };
-          }
+          return {
+            existingMatch,
+            newConversation,
+          };
+        }
+
+      } catch (error) {
+        console.log(error, 'ERROR IN HANDLE RIGHT SWIPE')
+      }
     }),
+
     handleSwipeLeft: privateProcedure
       .input(z.object({
         swipingDogId: z.string(),

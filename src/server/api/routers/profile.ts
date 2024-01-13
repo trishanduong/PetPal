@@ -69,6 +69,7 @@ export const profileRouter = createTRPCRouter({
     .input(z.object({
       name: z.string(), 
       age: z.number(), 
+      profilePic:z.string(),
       bio: z.string().max(255), 
       sex: z.string(),  
       location: z.string(),
@@ -87,6 +88,7 @@ export const profileRouter = createTRPCRouter({
           bio: input.bio,
           sex: input.sex,
           city: input.location,
+          profilePic:input.profilePic,
         },
       })
    

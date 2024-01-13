@@ -4,16 +4,12 @@ import Image from "next/legacy/image";
 const MiddleContent = () => {
 
   return (
-    <div className="relative flex w-full bg-teal-500">
+    <div className="relative w-full bg-amber-200 h-[75vh]">
       <div
-        className="w-full h-full" 
-        style={{
-          backgroundImage: `url('https://utfs.io/f/afc3607d-2be4-41d0-b6f8-f58dcf324f90-1jx1rj.png')`,
-          backgroundRepeat: 'repeat',
-          opacity: 70,
-        }}>
+        className="w-full h-full flex justify-center items-center" 
+        >
           <div className="m-4"> 
-            <div className="lg:flex lg:items-center bg-amber-200 justify-around py-6">
+            <div className="lg:flex lg:items-center justify-around py-6">
               <div className="lg:w-1/2 flex flex-col tracking-tighter">
                 <h1 className="sm:text-center font-extrabold text-yellow-900 text-4xl lg:text-4xl p-4">
                   Where Dogs Find Their Best Pals.
