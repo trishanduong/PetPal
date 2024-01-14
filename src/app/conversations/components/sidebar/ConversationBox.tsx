@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 
 // import type { Conversation, Message, User} from "@prisma/client";
-import { format } from "date-fns";
+import { format, compareDesc } from "date-fns";
 
 import type { FullConversationType } from "~/utils/types";
 import useOtherUser from "~/server/helpers/useOtherUsers";
@@ -33,12 +33,20 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   
     const lastMessage = useMemo(() => {
       const messages = data.messages || [];
-      console.log('messages: ', messages) //.filter((message)=>{message.createdAt()})
-      return messages[messages.length - 1];
+      if (messages.length === 0) {
+        return null;
+      };
+      console.log('MESSAGES: ', messages) //.filter((message)=>{message.createdAt()})
+      const sortedMessages = messages.sort((a, b) => 
+      compareDesc(a.createdAt, b.createdAt)
+      );
+
+      return sortedMessages[0];
     }, [data.messages]);
-  
-    const userEmail = useMemo(() => session.data?.user?.email,
-    [session.data?.user?.email]);
+    console.log('lastMessage', lastMessage);
+
+    const userId = useMemo(() => session.data?.user?.id,
+    [session.data?.user?.id]);
     
     const hasSeen = useMemo(() => {
       if (!lastMessage) {
@@ -47,13 +55,13 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   
       const seenArray = lastMessage.seenBy || [];
   
-      if (!userEmail) {
+      if (!userId) {
         return false;
       }
   
       return seenArray
-        .filter((user) => user.name === userEmail).length !== 0;
-    }, [userEmail, lastMessage]);
+        .filter((user) => user.userId === userId).length !== 0;
+    }, [lastMessage, userId]);
   
     const lastMessageText = useMemo(() => {
       if (lastMessage?.image) {

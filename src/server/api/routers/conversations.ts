@@ -1,7 +1,7 @@
 
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import conversationId from "~/app/conversations/[conversationId]/page";
+
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import getCurrentDogProfile from "~/server/helpers/getCurrentDogProfile";
 
@@ -70,6 +70,7 @@ export const conversationRouter = createTRPCRouter({
         console.log(error, 'ERROR_MESSAGES');
       }
     }),
+
   //Get Messages
   getMessages: privateProcedure 
     .input(z.object({
@@ -119,14 +120,15 @@ export const conversationRouter = createTRPCRouter({
             },
         },
         orderBy: {
-            lastMessageAt: 'desc',
+          lastMessageAt: 'desc',
         },
       });
 
-      console.log('conversations', conversations);
+      // console.log('conversations', conversations);
 
       return conversations;
     }),
+
   getConversationById: privateProcedure
     .input(z.object({
       conversationId: z.string(),
@@ -149,44 +151,60 @@ export const conversationRouter = createTRPCRouter({
         return null;
       }
     }),
+
   //Delete Messages (current conversation) - unmatching other dog profile
   deleteMessage: privateProcedure 
     .input(z.object({
       conversationId: z.string(),
     }))
     .mutation(async({ctx, input})=>{
-      console.log('deleted');
+      const { conversationId } = input;
+      console.log('made into router'); 
       try {
-        const currentDogProfile = await getCurrentDogProfile();
-        if(!currentDogProfile) throw new TRPCError({ code:"UNAUTHORIZED" });
-         //Find existing conversation
+        console.log('made it into the try block')
+
+         //Find existing conversation 
         const existingConversation = await ctx.db.conversation.findUnique({
           where: {
-            id: input.conversationId,
+            id: conversationId,
           },
           include: {
             users: true,
           }
         });
-
+        console.log('EXISTING CONVERSATION: ', existingConversation); //yes
         if(!existingConversation){
           throw new TRPCError( {code:"BAD_REQUEST" })
         };
 
-        // If this conversation exists, delete the conversation
-        const deletedConversation = await ctx.db.conversation.deleteMany({
-          where: {
-            id: input.conversationId,
-            users: {
-              some: {
-                userId: currentDogProfile.userId
-              }
-            }
-          }
+        // Find MatchConversation linked to the Conversation
+        
+        const matchConversation = await ctx.db.matchConversation.findUnique({ 
+          where: { 
+            conversationId: conversationId
+          } 
         });
 
-        //Matches?
-        
+        console.log('matchConversation', matchConversation); //match conversation is null;
+        if (matchConversation) {
+          // Delete MatchConversation
+          const deleted = await ctx.db.matchConversation.delete({
+            where: { id: matchConversation.id },
+          });
+
+          console.log("we deleted matchConversation", deleted);
+        }
+
+        const deleteConversation = await ctx.db.conversation.delete({
+          where: {
+            id: conversationId,
+          }
+        });
+        console.log('DELETE CONVERSATION MODEL', deleteConversation);
+        // Delete the conversation 
+        // await ctx.db.conversation.delete({
+        //   where: { id: conversationId },
+        // });
 
       } catch (error) {
         console.log(error, "ERROR_CONVERSATION_DELETE");

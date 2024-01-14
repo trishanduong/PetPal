@@ -24,13 +24,15 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const router = useRouter();
   const { conversationId } = useConversation();
   const [ isLoading, setIsLoading ] = useState(false);
-  const deleteConversation = api.conversation.deleteMessage.useMutation()
+  const deleteConversation = api.conversation.deleteMessage.useMutation();
 
-  const onDelete = useCallback(async()=>{
-    setIsLoading(true);
+  const onDelete = async () => {
 
     try {
-        await deleteConversation.mutateAsync({conversationId});
+        //Delete Match 
+        const deleteConvo = await deleteConversation.mutateAsync({ conversationId });
+        console.log('deleted', deleteConvo);
+
         router.push('/conversations');
         router.refresh();
         setIsLoading(false);
@@ -38,7 +40,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         console.log(error, 'ERROR')
     }
 
-  }, [conversationId, deleteConversation, router])
+  };
 
 
   return (
