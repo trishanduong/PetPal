@@ -2,6 +2,8 @@
 
 'use client'
 import { api } from "~/trpc/react";
+import { useState } from "react";
+import clsx from "clsx";
 
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -12,8 +14,6 @@ import useConversation from "~/server/helpers/useConversation";
 
 import MessageInput from "./MessageInput";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
-import clsx from "clsx";
-import { useState } from "react";
 
 
 const Form: React.FC = () => {
@@ -22,16 +22,17 @@ const Form: React.FC = () => {
   const { conversationId } = useConversation();
   
   const { 
-    register, 
-    handleSubmit, 
-    setValue, 
-    formState: {
-      errors,
-    }
-  } = useForm<FieldValues>({
-    defaultValues: {
-      image:'',
-      message: ''
+      register, 
+      handleSubmit, 
+      setValue, 
+      reset,
+      formState: {
+        errors,
+      }
+    } = useForm<FieldValues>({
+      defaultValues: {
+        image:'',
+        message: ''
     }
   });
   
@@ -42,12 +43,17 @@ const Form: React.FC = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     await create.mutateAsync({ image, conversationId, message })
+    //Reset Form Fields
+    reset({
+      image: '',
+      message: ''
+    });
   };
 
   const handleUpload = (result: CldUploadWidgetResults) => {
     if (result?.info && typeof result.info !== 'string' && result.info.secure_url){
       const url = result?.info?.secure_url;
-      console.log('uplaoded photo');
+      console.log('uploaded photo');
       setMessagePic(true); 
       setValue('image', url);
     };

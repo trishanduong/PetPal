@@ -8,7 +8,7 @@ import { ClipLoader } from 'react-spinners';
 const LoadingModal = () => {
   return (
     <Transition.Root show as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={() => {}}>
+      <Dialog as="div" className="relative z-50" onClose={() => {(console.log('Loaded'))}}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

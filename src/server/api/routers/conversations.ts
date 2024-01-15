@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import getCurrentDogProfile from "~/server/helpers/getCurrentDogProfile";
+import { pusherServer } from "~/utils/pusher";
 
 export const conversationRouter = createTRPCRouter({
   //Create Message
@@ -65,6 +66,18 @@ export const conversationRouter = createTRPCRouter({
             } 
           }
         });
+
+        // Channel we are sending the message a new key, is called conversationId. Every user listening to ConversationId channel gets that update. 
+        await pusherServer.trigger(input.conversationId, 'messages:new', newMessage);
+        const lastMessage = updatedConversation.messages[updatedConversation.messages.length - 1];
+        //Update lastMessage for all users in the conversation 
+        updatedConversation.users.map(async(user) => {
+          await pusherServer.trigger(user.userId, 'conversation:update', {
+            id: input.conversationId,
+            messages: [lastMessage]
+          });
+        });
+
         return newMessage;
       } catch(error) {
         console.log(error, 'ERROR_MESSAGES');
@@ -201,14 +214,81 @@ export const conversationRouter = createTRPCRouter({
           }
         });
         console.log('DELETE CONVERSATION MODEL', deleteConversation);
-        // Delete the conversation 
-        // await ctx.db.conversation.delete({
-        //   where: { id: conversationId },
-        // });
+
+        existingConversation.users.forEach((user) => {
+          if(!user.id){
+            void pusherServer.trigger(user.id, 'conversation:remove', existingConversation); 
+          }
+        });
 
       } catch (error) {
         console.log(error, "ERROR_CONVERSATION_DELETE");
         throw new TRPCError({code: "INTERNAL_SERVER_ERROR"})
       }
-    })
+    }),
+
+    updateSeen: privateProcedure
+      .input(z.object({
+        conversationId: z.string(),
+      }))
+      .mutation(async({ ctx, input })=>{ 
+        const { conversationId } = input;
+        try {
+          //Get current dog profile
+          const currentDog = await getCurrentDogProfile();
+          if(!currentDog) throw new TRPCError({ code:"BAD_REQUEST", message:"No current dog profile found" })
+          //Find the conversation 
+          const currentConversation = await ctx.db.conversation.findUnique({
+            where: {
+              id: conversationId,
+            },
+            include: {
+              messages: {
+                include: {
+                  seenBy: true, 
+                }
+              },
+              users: true,
+            }
+          });
+
+          if(!currentConversation) throw new TRPCError({ code: "BAD_REQUEST", message: "CurrentConversation not found."});
+          //Find the last message
+          const lastMessage = currentConversation.messages[currentConversation.messages.length - 1];
+          if(!lastMessage) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "LastMessage not found."})
+
+          //Update the seen of the last message:
+          const updatedMessage = await ctx.db.message.update({
+            where: {
+              id: conversationId,
+            },
+            include: {
+              sender: true,
+              seenBy: true,
+            },
+            data: {
+              seenBy: {
+                connect: {
+                  id: currentDog?.id
+                }
+              }
+            }
+          });
+
+          // await pusherServer.trigger(currentDog.id, 'conversation:update', {
+          //   id: conversationId,
+          //   messages: [ updatedMessage ]
+          // });
+
+          // If user has already seen the message, no need to go further
+          if (lastMessage.seenIds.indexOf(currentDog?.id) !== -1) {
+            return;
+          };
+
+          // await pusherServer.trigger(conversationId, 'message:update', updatedMessage);
+
+        } catch (error) {
+          console.log(error, 'ERROR IN updateSeen');
+        }
+      })
 });

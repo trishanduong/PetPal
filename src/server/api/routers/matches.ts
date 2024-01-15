@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 import type { Match } from "@prisma/client";
+import { pusherServer } from "~/utils/pusher";
 
 export const matchesRouter = createTRPCRouter({
   handleSwipeRight: privateProcedure
@@ -36,21 +37,30 @@ export const matchesRouter = createTRPCRouter({
         } else {
           //if we have a mutual match, create conversation between users
           const newConversation = await ctx.db.conversation.create({
-              data: {
-                  isGroup: false,
-                  matchConversation: {
-                      create: {
-                        matchId: existingMatch.id,
-                      },
+                data: {
+                    isGroup: false,
+                    matchConversation: {
+                        create: {
+                          matchId: existingMatch.id,
+                        },
+                    },
+                    users: {
+                        connect: [
+                            { id: swipingDogId }, 
+                            { id: swipedDogId} 
+                        ],
+                    },
                   },
-                  users: {
-                      connect: [
-                          { id: swipingDogId }, 
-                          { id: swipedDogId} 
-                      ],
-                  },
-                },
-            });
+                include: {
+                  users: true,
+                }
+              });
+          
+          newConversation.users.forEach((user) => {
+              if(!user.id){
+                void pusherServer.trigger(user.id, 'conversation:new', newConversation)
+              }
+          });
 
           console.log('newConversation', newConversation);
 

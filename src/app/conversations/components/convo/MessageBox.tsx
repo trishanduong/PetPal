@@ -28,6 +28,7 @@ const MessageBox:React.FC<MessageBoxProps> = ({
 
   const isOwn = session?.data?.user.id === data?.sender.userId;
   // filtering through data.seen and removing sener user fro m the people hwo saw the mesasge (from seeing their own message), map over filtered array, and return name of each user that has seen the message
+  
   const seenList = (data.seenBy || [])
     .filter((user)=>{ user.userId !== data.sender.userId})
     .map((user)=> user.name)
@@ -37,14 +38,17 @@ const MessageBox:React.FC<MessageBoxProps> = ({
     flex gap-3 p-4`,
     isOwn && "justify-end")
 
-  const avatar = clsx(isOwn && "order-2")
+  const avatar = clsx(isOwn && "order-2");
+
   const body = clsx(`flex flex-col gap-2`, 
     isOwn && "items-end"
-  )
+  );
   const message = clsx(`text-sm w-fit overflow-hidden`,
     isOwn ? "bg-sky-500 text-white" : 'bg-gray-100',
     data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'
-  )
+  );
+
+
   return (
     <div className={container}>
       <div className={avatar}>
