@@ -25,11 +25,6 @@ const PostBox = async(props: PostBoxProps) => {
               // layout="responsive" 
               width={300} 
               height={400} 
-              // style={{
-              // objectFit: 'cover',
-              // width: '100%', 
-              // height: 'auto',
-              // }} 
               sizes="100vw"
               style={{
                 width: '100%',

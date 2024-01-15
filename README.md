@@ -8,9 +8,6 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Prisma](	https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-
-# PetPals
 
 PetPals is a unique app designed for dog owners who want to set playdates with other dog enthusiasts in their area. This app allows users to connect, share information about their dogs, and schedule meetings in dog-friendly locations. Whether you're looking for a play partner for your dog or a social opportunity for yourself, PetPals makes it easy and fun!
 
@@ -48,15 +45,13 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 - [x] Chatroom functionality
 - [ ] Credential authentication with NextAuth. (In-progress, Need to connect account creation with Prisma Account Model )
 - [ ] Notifications (Need to update Prisma model)
-- [ ] Testing
+- [x] Chatroom Mobile Responsiveness
 - [ ] Migrate UploadThing functionality to Cloudinary CDN
+- [ ] Testing
 - [ ] Extending Pusher functionality for 'real time' updates
     - [ ] Online/offline user status
     - [ ] Message read/seen receipts (In-progress, currently encountering Pusher errors)
 - [ ] Group chat functionality
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
 
 ### Prerequisites
 

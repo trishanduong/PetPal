@@ -29,11 +29,20 @@ const conversationId = async ({params} : {params: IParams}) => {
     
     return (
       <div className="flex w-full h-screen">
-        <div className="w-2/5 lg:w-1/5 bg-amber-300 border-r border-amber-400">
-          <ConversationList initialItems={conversations}/>
+        <div className="hidden lg:flex lg:w-full">
+          <div className="w-full lg:w-1/5 bg-amber-300 border-r border-amber-400">
+            <ConversationList initialItems={conversations}/>
+          </div>
+          <div className='md:flex-grow lg:w-4/5'>
+            <div className="bg-amber-100 h-full flex flex-col">
+              <Header conversation={conversation} />
+              <Body initialMessages={messages} />
+              <Form  />
+            </div>
+          </div>
         </div>
-        <div className='w-full lg:w-4/5'>
-          <div className="bg-amber-100 h-full flex flex-col">
+        <div className="lg:hidden w-full pt-24">
+          <div className="bg-amber-100 w-full h-full flex flex-col">
             <Header conversation={conversation} />
             <Body initialMessages={messages} />
             <Form  />

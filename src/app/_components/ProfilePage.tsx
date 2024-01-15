@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import Image from "next/legacy/image";
 import { api } from "~/trpc/server";
-import type { RouterOutputs } from "~/trpc/shared";
-import PostBox from "./Post";
+
 import type { Post } from "@prisma/client";
+import type { RouterOutputs } from "~/trpc/shared";
+
+import Image from "next/legacy/image";
+import PostBox from "./Post";
 import getUserId from "~/server/helpers/getUserId";
 
 type ProfileWithUser = RouterOutputs["profile"]["getProfileById"]
@@ -17,8 +19,8 @@ type TraitValue = number | string
 const Trait:React.FC<TraitProps>= ({trait, value}) => {
   
     return (
-     <div>
-       <div aria-label={trait} className="inline-block bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2 drop-shadow-sm">
+     <div className="pt-2">
+       <div aria-label={trait} className="inline-block text-xl bg-amber-100 rounded-full px-3 py-1 text-sm font-semibold text-amber-700 mr-2 mb-2 drop-shadow-sm">
         #{typeof value === 'number'? value + ' pounds' : value}
        </div>
      </div>
@@ -46,13 +48,13 @@ const ProfileHeader = async (props: ProfileWithUser) => {
             className="rounded-full border-4 border-slate-50" 
           />
         </div>
-        <div className="pt-3 text-amber-900 text-8xl font-bold">{name.toLowerCase()}</div>
-        <div className="text-amber-800"> {age} years old <span className="text-yellow-600">✦</span> {city}</div>
+        <div className="pt-3 text-amber-900 text-8xl font-bold text-center">{name.toLowerCase()}</div>
+        <div className="text-amber-800 text-2xl"> {age} years old <span className="text-yellow-600">✦</span> {city}</div>
         <div className="w-full">
-          <div className="font-semibold">Bio: </div>
-          <div>{`${bio}`}</div>
-          <div className="font-semibold">About me:</div>
-          <div className="flex">
+          <div className="font-semibold text-3xl">BIO: </div>
+          <div className="text-2xl">{`${bio}`}</div>
+          <div className="font-semibold text-3xl pt-7">ABOUT ME:</div>
+          <div className="flex flex-wrap">
             {tag.map(([trait, value], index)=> {
               if(!value || trait==='id' || trait === 'dogProfileId' || typeof value==='bigint' || trait === 'energyLevel') return
               return <Trait key={index} trait={trait} value={value}/>}
