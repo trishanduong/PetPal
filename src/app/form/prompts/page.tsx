@@ -7,6 +7,7 @@ import type { Prompt } from "@prisma/client";
 import FormProgressBar from "~/app/_components/FormProgressBar";
 
 import { useRouter } from 'next/navigation';
+import LoadingModal from "~/app/_components/LoadingModal";
 
 type Data = {
   image: string,
@@ -27,7 +28,7 @@ const Prompts = () => {
   const allPosts = api.post.createPosts.useMutation();
   const {data: promptsQuery, isLoading, error} = api.prompt.getAllPrompts.useQuery();
   
-  if(isLoading) return <div>Loading...</div>
+  if(isLoading) return <LoadingModal />
   if (error) return <div>An error occurred: {error.message}</div>;
   
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {

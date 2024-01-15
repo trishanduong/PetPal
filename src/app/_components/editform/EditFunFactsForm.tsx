@@ -8,6 +8,7 @@ import {useForm, type SubmitHandler, Controller} from 'react-hook-form';
 import { UploadButton } from "~/utils/uploadthing";
 import type { Prompt, Post} from "@prisma/client";
 import Image from "next/legacy/image";
+import LoadingModal from "../LoadingModal";
 
 type PromptQueryProps = {
     promptsQuery: {
@@ -37,7 +38,7 @@ const EditFunFactsForm: FC<PromptQueryProps> = ({promptsQuery}) => {
     const {data: updatePosts, isLoading, error} = api.post.getPostsForEdit.useQuery();
 
     if(!updatePosts) return <div>No image</div>
-    if(isLoading) return <div>Loading...</div>
+    if(isLoading) return <LoadingModal />
     if (error) return <div>An error occurred: {error.message}</div>;
 
     const getDefaultValue = (prompt: string, field: keyof Post): string | Date => {

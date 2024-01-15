@@ -1,5 +1,7 @@
+/* Avatar Component */
+
 'use client';
-import { DogProfile} from "@prisma/client";
+import type { DogProfile} from "@prisma/client";
 import Image from "next/image";
 
 interface AvatarProps {
@@ -14,7 +16,7 @@ const Avatar: React.FC<AvatarProps> = ({
       <div className="relative inline-block rounded-full overflow-hidden h-9 w-9 md:h-11 md:w-11">
         <Image
           alt="Avatar"
-          src={user?.profilePic ?? '/placeholder.jpg'}
+          src={ user?.profilePic ?? '/placeholder.jpg' }
           fill
         />
       </div>

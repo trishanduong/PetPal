@@ -5,6 +5,7 @@ import {useForm, type SubmitHandler, Controller} from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
+import LoadingModal from '../LoadingModal';
 
 type TraitsFormProps = {
   traitsId: string,
@@ -27,7 +28,7 @@ const EditTraitsForm: FC<TraitsFormProps> = ({traitsId}) => {
     const { handleSubmit, control} = useForm<FormInputs>();
     const updateTraits = api.traits.updateTraits.useMutation();
     const {data: traits, isLoading, error} = api.traits.getTraitsById.useQuery({traitsId});
-    if(isLoading) return <div>Loading...</div>
+    if(isLoading) return <LoadingModal />
     if (error) return <div>An error occurred: {error.message}</div>;
     console.log('traitsId', traitsId)
 

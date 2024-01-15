@@ -5,11 +5,12 @@ import { api } from '~/trpc/react';
 import ProfileCard from '~/app/_components/ProfileCard';
 import EditTraitsForm from '~/app/_components/editform/editTraitForm';
 import EditContents from '~/app/_components/editform/EditContents';
+import LoadingModal from '~/app/_components/LoadingModal';
 
 export default function EditProfile(){
   const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({type: 'personal'});
 
-  if(isLoading) return <div>Loading...</div>;
+  if(isLoading) return <LoadingModal />;
   if (error) return <div>An error occurred: {error.message}</div>;
   const userId = profile?.userId;
   if (!userId) {

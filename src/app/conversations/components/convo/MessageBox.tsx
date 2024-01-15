@@ -1,12 +1,18 @@
-'use client';
-import clsx from "clsx";
+/* MessageBox component within Body component */
 
-import { useSession } from "next-auth/react";
-import { format } from "date-fns";
+'use client';
+
+import clsx from "clsx";
 import type { FullMessageType } from "~/utils/types";
+
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+
+import { format } from "date-fns";
+
 import Avatar from "~/app/_components/Avatar";
 import Image from "next/image";
-
+import ImageModal from "./ImageModal";
 
 interface MessageBoxProps {
   data: FullMessageType;
@@ -18,15 +24,15 @@ const MessageBox:React.FC<MessageBoxProps> = ({
    isLast,
 }) => {
   const session = useSession();
-  // const hi = session.data?.user.id
+  const [ imageModalOpen, setImageModalOpen ] = useState(false);
+
   const isOwn = session?.data?.user.id === data?.sender.userId;
   // filtering through data.seen and removing sener user fro m the people hwo saw the mesasge (from seeing their own message), map over filtered array, and return name of each user that has seen the message
   const seenList = (data.seenBy || [])
     .filter((user)=>{ user.userId !== data.sender.userId})
     .map((user)=> user.name)
     .join(', ');
-  // console.log(seenList)
-  
+
   const container = clsx(`
     flex gap-3 p-4`,
     isOwn && "justify-end")
@@ -54,8 +60,16 @@ const MessageBox:React.FC<MessageBoxProps> = ({
             </div>
         </div>
         <div className={message}>
+          <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />
           {data.image ? (
-            <Image alt="Image" height={288} width={288} src={data.image} className="object-cover cursor-pointer hover:scale-110 transition translate" />
+            <Image 
+               alt="Image" 
+               height={288} 
+               width={288} 
+               src={data.image} 
+               onClick={() => setImageModalOpen(true)}
+               className="object-cover cursor-pointer hover:scale-110 transition translate" 
+             />
           ) : (
             <div>{data.body}</div>
           )}

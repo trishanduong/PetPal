@@ -3,6 +3,7 @@
 import type { FC } from "react";
 import { api } from "~/trpc/react";
 import { useRouter } from 'next/navigation';
+import LoadingModal from "./LoadingModal";
 
 //Props: profileId of the user we are rejecting/accepted
 type ButtonProps = {
@@ -18,7 +19,7 @@ const Buttons: FC<ButtonProps>= ({profileId, currentUserId}) => {
     const createConvo = api.match.handleSwipeRight.useMutation();
 
     
-   if(isLoading) return <div>Loading...</div>;
+   if(isLoading) return <LoadingModal />;
    if (error) return <div>An error occurred: {error.message}</div>;
    const id = profile?.id;
    if(!id) throw new Error('No id');

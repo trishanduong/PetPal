@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import useConversation from "~/server/helpers/useConversation";
 
 import { MdOutlineGroupAdd } from "react-icons/md"
@@ -16,7 +15,6 @@ interface ConversationListProps {
 const ConversationList: React.FC<ConversationListProps> = ({
   initialItems,
 }) => {
-  const router = useRouter();
   const [items, setItems] = useState(initialItems);
   
   const { conversationId, isOpen } = useConversation();

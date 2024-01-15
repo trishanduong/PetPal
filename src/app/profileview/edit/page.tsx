@@ -1,3 +1,4 @@
+/* Update name, age, bio, sex, location, userId, profilePic of DogProfile */
 
 'use client'
 
@@ -11,6 +12,7 @@ import { CldUploadButton } from 'next-cloudinary';
 
 import ProfileCard from '~/app/_components/ProfileCard';
 import EditContents from '~/app/_components/editform/EditContents';
+import LoadingModal from '~/app/_components/LoadingModal';
 
 
 export type FormInputs = {
@@ -30,10 +32,11 @@ export default function EditProfile(){
   const updateProfile = api.profile.updateProfile.useMutation();
    
   const {data: profile, isLoading, error} = api.profile.getProfileById.useQuery({type: 'personal'});
-  if(isLoading) return <div>Loading...</div>;
+  if(isLoading) return <LoadingModal />;
   if (error) return <div>An error occurred: {error.message}</div>;
   const userId = profile?.userId;
   if(!userId) throw new Error("Unauthorized");
+
   const image = watch('profilePic');
 
   const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
@@ -154,7 +157,7 @@ export default function EditProfile(){
                     age={profile.age}
                     bio={profile.bio}
                     city={profile.city}
-                    />
+                />
               )}
           </div>
           </div>

@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import useConversation from "~/server/helpers/useConversation";
 import type { FullMessageType } from "~/utils/types";
@@ -16,9 +16,7 @@ const Body: React.FC<BodyProps> = ({
   const [messages, setMessages] = useState(initialMessages);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { conversationId } = useConversation();
-//   useEffect(()=>{
-//     axios.post(`/api/conversations/${conversationId}/seen`)
-//   }, [conversationId]);
+
   
   return (
     <div className="flex-1 overflow-y-auto bg-amber-100">

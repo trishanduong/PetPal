@@ -43,7 +43,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
 
       return sortedMessages[0];
     }, [data.messages]);
-    console.log('lastMessage', lastMessage);
+
 
     const userId = useMemo(() => session.data?.user?.id,
     [session.data?.user?.id]);
