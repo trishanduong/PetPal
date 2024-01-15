@@ -5,7 +5,7 @@ export default function Page(){
 
 
   return (
-    <div className="my-1">
+    <div>
       <div className="relative h-screen w-full">
       <Image
         src="https://utfs.io/f/308777e1-8967-43fd-b6ad-0f2297d99d00-fumv8n.jpeg" 
@@ -24,25 +24,27 @@ export default function Page(){
       </div>
     </div>
     
-    <div className="flex items-center justify-end space-x-reverse space-x-4"> 
-      <div className="flex-shrink px-5">
-        <h1 className="text-4xl font-extrabold leading-none tracking-tight mr-3 text-gray-900 md:text-5xl lg:text-6xl dark:text-amber-900 p-4 underline underline-offset-3 decoration-8 decoration-teal-400 dark:decoration-teal-600">Our Mission</h1>
-        <p className="text-xl px-4 text-amber-800">
-            {`Hey there! At PetPals, we're all about making dogs' tails wag and their owners smile. Our mission? Simple. We're here to help you find awesome playmates for your furry best friend.`}
-        </p>
-        <p className="text-xl mt-2 px-4 text-amber-800">
-            {`We think every dog deserves fun playdates, loads of new sniff buddies, and loads of happy adventures. Our app is super easy to use because we want you to spend less time planning and more time playing. We're more than just an app – we're a community where dog lovers can connect, share, and create lasting memories with their lifelong pals.`}
-          </p>
-      </div>
-      <div className="flex-shrink-0">
-        <Image
-          src="https://utfs.io/f/4b075ffb-b46d-4e92-9cd8-4d39f304f31f-tu5fy1.png" 
-          alt="Descriptive text for the image"
-          width={500} 
-          height={300} 
-          layout="intrinsic" 
-          className="rounded-md mt-4"
-        />
+    <div className="w-full">
+      <div id="about" className="bg-amber-300">
+        <div className="flex items-center">
+          <div className="flex-1 px-4">
+            <h1 className="text-4xl font-extrabold leading-none tracking-tight mr-3 text-gray-900 md:text-5xl lg:text-6xl dark:text-amber-900 p-4 underline underline-offset-3 decoration-8 decoration-teal-400 dark:decoration-teal-600">Our Mission</h1>
+            <p className="text-xl px-4 text-amber-800">
+              {`Hey there! At PetPals, we're all about making dogs' tails wag and their owners smile. Our mission? Simple. We're here to help you find awesome playmates for your furry best friend.`}
+            </p>
+            <p className="text-xl mt-2 px-4 text-amber-800">
+              {`We think every dog deserves fun playdates, loads of new sniff buddies, and loads of happy adventures. Our app is super easy to use because we want you to spend less time planning and more time playing. We're more than just an app – we're a community where dog lovers can connect, share, and create lasting memories with their lifelong pals.`}
+            </p>
+          </div>
+          <div className="flex-1"> 
+            <Image
+              src="https://utfs.io/f/4b075ffb-b46d-4e92-9cd8-4d39f304f31f-tu5fy1.png"
+              alt="Cute dogs."
+              width={400}
+              height={250}
+              layout="responsive"/>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -50,10 +52,10 @@ export default function Page(){
         <div className="flex items-center">
           <div className="flex-1"> 
             <Image
-              src="https://utfs.io/f/8d6a3de9-cef8-492c-a764-4743b8019eac-qyngwr.png"
-              alt="Descriptive text for the image"
-              width={500}
-              height={300}
+              src="https://utfs.io/f/ea9e10c0-655e-4b7a-94f7-10c1b21d1233-es2ivh.png"
+              alt="A sunny beach scene with two pitbulls playing together. The beach has golden sand and a clear blue sky overhead. The dogs are energetically engaged in"
+              width={300}
+              height={250}
               layout="responsive"/>
           </div>
           <div className="flex-1 px-4">

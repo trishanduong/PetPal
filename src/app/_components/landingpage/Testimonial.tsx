@@ -11,7 +11,7 @@ const Testimonial = () => {
           <p className="text-2xl italic font-bold text-center text-gray-900 dark:text-teal-800">{`"Petpals is just awesome. My dogs have never been more happy and social! Perfect choice to for you spend less time planning and more time for them to play."`}</p>
         </blockquote>
         <div className="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-          <Image className="w-6 h-6 rounded-full" height={24} width={24} src="https://utfs.io/f/c4fa08ea-9589-4d9d-861e-758b50b65731-8lwivt.jpg" alt="profile picture" />
+          <Image className="w-6 h-6 rounded-full" height={24} width={24} src='/placeholder.jpg' alt="profile picture" />
           <div className="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-500 dark:divide-gray-700">
             <p className="pe-3 font-medium text-teal-600">Steven Quach</p>
             <p className="ps-3 text-sm text-amber-900">Pet Owner</p>

@@ -1,28 +1,115 @@
-# Create T3 App
+<h1 align="center">
+  <p>PetPals 🐾</p>
+</h1>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![CockroachDb](https://img.shields.io/badge/Cockroach%20Labs-6933FF?style=for-the-badge&logo=Cockroach%20Labs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Prisma](	https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## What's next? How do I make an app with this?
+# PetPals
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+PetPals is a unique app designed for dog owners who want to set playdates with other dog enthusiasts in their area. This app allows users to connect, share information about their dogs, and schedule meetings in dog-friendly locations. Whether you're looking for a play partner for your dog or a social opportunity for yourself, PetPals makes it easy and fun!
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Key Features:
+- Landing Page, About Me page
+- CockroachDB PostgreSQL database
+- Real-time messaging using Pusher
+- Google & Discord authentication integration with NextAuth
+- Client form validation and handling using react-hook-form
+- Matching with other profiles based, creating match conversations
+- Delete Conversation Functionality (unmatch)
+- User profile customization and settings
+- Full responsiveness with Tailwind
+- Tailwind animations and transition effects
+- File and image upload using UploadThing & Cloudinary CDN
+
+## Tech
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [Pusher](https://pusher.com/)
+- [Cloudinary](https://cloudinary.com/)
+- [Uploadthing](https://uploadthing.com/)
+-
 
-## Learn More
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Roadmap
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- [x] Swiping Functionality
+- [x] Chatroom functionality
+- [ ] Credential authentication with NextAuth. (In-progress, Need to connect account creation with Prisma Account Model )
+- [ ] Notifications (Need to update Prisma model)
+- [ ] Testing
+- [ ] Migrate UploadThing functionality to Cloudinary CDN
+- [ ] Extending Pusher functionality for 'real time' updates
+    - [ ] Online/offline user status
+    - [ ] Message read/seen receipts (In-progress, currently encountering Pusher errors)
+- [ ] Group chat functionality
 
-## How do I deploy this?
+See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+### Prerequisites
+
+**Node version 14.x**
+
+### Cloning the repository
+
+```shell
+git clone https://github.com/AntonioErdeljac/next13-messenger.git
+```
+
+### Install packages
+
+```shell
+npm i
+```
+
+### Setup .env file
+
+
+```js
+DATABASE_URL=
+
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+
+# Next Auth Discord Provider
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+
+NEXT_PUBLIC_PUSHER_APP_KEY=
+PUSHER_APP_ID=
+PUSHER_SECRET=
+
+```
+
+### Setup Prisma
+
+```shell
+npx prisma db push
+
+```
+
+### Start the app
+
+```shell
+npm run dev
+```
