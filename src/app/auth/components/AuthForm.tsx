@@ -118,10 +118,10 @@ const AuthForm = () => {
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-           {variant === 'REGISTER' && (
+           {/* {variant === 'REGISTER' && (
               <Input id="name" label="Name" register={register} errors={errors} disabled={isLoading}/>
-            )}
-           <Input id="email" label="Email address" register={register} errors={errors} disabled={isLoading}/>
+            )} */}
+           {/* <Input id="email" label="Email address" register={register} errors={errors} disabled={isLoading}/>
            <Input id="password" label="Password" register={register} errors={errors} disabled={isLoading}/>
            <Button
              disabled={isLoading}
@@ -129,7 +129,7 @@ const AuthForm = () => {
              type="submit"
            >
             {variant === 'LOGIN' ? 'Sign in' : 'Register'}
-           </Button>
+           </Button> */}
           </form>
 
           <div className="mt-6">
@@ -144,8 +144,8 @@ const AuthForm = () => {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Or continue with
+              <span className="bg-white px-2 text-gray-600">
+                {variant === 'LOGIN' ? 'Sign in with Github or Google': 'Register with Google or Github'}
               </span>
             </div>
           </div>
@@ -157,10 +157,10 @@ const AuthForm = () => {
 
           <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
              <div>
-                {variant === 'LOGIN' ? 'New to Messenger?': 'Already have an account?'}
+                {variant === 'LOGIN' ? 'New to PetPals?': 'Already have an account?'}
              </div>
              <div onClick={toggleVariant} className="unerline cursor-pointer">
-                {variant === 'LOGIN' ? 'Create an account' : 'Login'}
+                {variant === 'LOGIN' ? 'Create an account' : 'Login'} 
              </div>
           </div>
           </div>

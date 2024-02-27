@@ -43,7 +43,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 - [x] Swiping Functionality
 - [x] Chatroom functionality
-- [ ] Credential authentication with NextAuth. (In-progress, Need to connect account creation with Prisma Account Model )
+- [x] ~~Credential authentication with NextAuth. (In-progress, Need to connect account creation with Prisma Account Model )~~ Migrated to passwordless authentication
 - [ ] Notifications (Need to update Prisma model)
 - [x] Chatroom Mobile Responsiveness
 - [ ] Migrate UploadThing functionality to Cloudinary CDN
